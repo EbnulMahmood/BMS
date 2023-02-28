@@ -2,7 +2,7 @@
 
 namespace BMS.CoreBusiness.Entities
 {
-    public sealed class Task
+    public sealed class DevTask
     {
         public Guid Id { get; set; }
         public string? Title { get; set; }
@@ -15,8 +15,8 @@ namespace BMS.CoreBusiness.Entities
         public string? Responsible1 { get; set; }
         public string? Responsible2 { get; set; }
         public int Release { get; set; }
-        public decimal EstimatedHours { get; set; }
-        public decimal ActualHours { get; set; }
+        public decimal? EstimatedHours { get; set; }
+        public decimal? ActualHours { get; set; }
         public string? FRSMenuLink { get; set; }
         public string? UrlOrMenuOrWorkflow { get; set; }
         public string? Remarks { get; set; }
