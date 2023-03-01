@@ -2,3 +2,26 @@
 @inherits DevTaskListBase
 
 <h3>Task List</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Status</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Tasks)
+        {
+            <tr>
+                <th scope="row">@serialNumber</th>
+                <td>@item.Status</td>
+                <td>@item.Priority</td>
+                <td>@item.Title</td>
+            </tr>
+            @(serialNumber++)
+        }
+    </tbody>
+</table>

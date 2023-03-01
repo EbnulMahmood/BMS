@@ -5,6 +5,7 @@ namespace BMS.UseCases.PluginIRepositories
     public interface ITaskRepository
     {
         #region Operational Function
+        Task SaveTaskAsync(DevTask devTask);
         #endregion
 
         #region Single Instances Loading Function

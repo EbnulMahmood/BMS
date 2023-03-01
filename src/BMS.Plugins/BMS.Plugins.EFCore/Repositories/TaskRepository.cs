@@ -1,4 +1,5 @@
 ﻿using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.ViewModels;
 using BMS.Plugins.EFCore.Data;
 using BMS.UseCases.PluginIRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,19 @@ namespace BMS.Plugins.EFCore.Repositories
         #endregion
 
         #region Operational Function
+        public async Task SaveTaskAsync(DevTask devTask)
+        {
+            try
+            {
+                await _context.Tasks.AddAsync(devTask);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
 
         #region Single Instances Loading Function

@@ -1,4 +1,6 @@
 ﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories;
 
 namespace BMS.UseCases.Services
@@ -6,6 +8,7 @@ namespace BMS.UseCases.Services
     public interface ITaskService
     {
         #region Operational Function
+        Task SaveTaskAsync(DevTaskViewModelCreate viewModel);
         #endregion
 
         #region Single Instances Loading Function
@@ -37,6 +40,48 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Operational Function
+        public async Task SaveTaskAsync(DevTaskViewModelCreate viewModel)
+        {
+            try
+            {
+                if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+
+                var devTask = new DevTask
+                {
+                    Title = viewModel.Title?.Trim(),
+                    Status = viewModel.Status,
+                    Priority = viewModel.Priority,
+                    Project = viewModel.Project?.Trim(),
+                    UXDesignLink = viewModel.UXDesignLink?.Trim(),
+                    Group = viewModel.Group?.Trim(),
+                    EntryBy = viewModel.EntryBy?.Trim(),
+                    Responsible1 = viewModel.Responsible1?.Trim(),
+                    Responsible2 = viewModel.Responsible2?.Trim(),
+                    Release = viewModel.Release,
+                    EstimatedHours = viewModel.EstimatedHours,
+                    ActualHours = viewModel.ActualHours,
+                    FRSMenuLink = viewModel.FRSMenuLink?.Trim(),
+                    UrlOrMenuOrWorkflow = viewModel.UrlOrMenuOrWorkflow?.Trim(),
+                    Remarks = viewModel.Remarks?.Trim(),
+                    TaskCompletedTime = viewModel.TaskCompletedTime,
+                    TaskCreationDate = viewModel.TaskCreationDate,
+                    QAResponsible = viewModel.QAResponsible?.Trim(),
+                    QADoneTime = viewModel.QADoneTime,
+                    Review = viewModel.Review?.Trim(),
+                    ReviewRemarks = viewModel.ReviewRemarks?.Trim(),
+                    TestCaseFunctional = viewModel.TestCaseFunctional?.Trim(),
+                    TestFeatureAndScenario = viewModel.TestFeatureAndScenario?.Trim(),
+                    WebRequestKey = viewModel.WebRequestKey?.Trim(),
+                };
+
+                await _repository.SaveTaskAsync(devTask);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
 
         #region Single Instances Loading Function

@@ -12,6 +12,7 @@ namespace BMS.BlazorWebApp.Pages.Tasks
         #region Properties & Object Initialization
         public IEnumerable<DevTaskDto> Tasks { get; set; } = Enumerable.Empty<DevTaskDto>();
         public int recordsCount = 0;
+        public int serialNumber = 0;
 
         [Inject]
         public ITaskService TaskService { get; private set; }
@@ -29,7 +30,7 @@ namespace BMS.BlazorWebApp.Pages.Tasks
         #endregion
 
         #region List Loading Function
-        public async Task LoadTaskAsync()
+        private async Task LoadTaskAsync()
         {
             (Tasks, recordsCount) = await TaskService.LoadTaskAsync();
         }
