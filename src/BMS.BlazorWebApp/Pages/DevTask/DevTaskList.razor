@@ -3,24 +3,73 @@
 
 <PageTitle>Task List</PageTitle>
 
-<h3>Task List</h3>
+<div class="container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Status</th>
-            <th scope="col">Priority</th>
-            <th scope="col">Title</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Tasks)
-        {
-            <tr>
-                <td>@item.Status</td>
-                <td>@item.Priority</td>
-                <td>@item.Title</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <h3>Task List</h3>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Task</th>
+                    <th scope="col">Project</th>
+                    <th scope="col">UX Design / Link</th>
+                    <th scope="col">Group</th>
+                    <th scope="col">Entry By</th>
+                    <th scope="col">Responsible 1</th>
+                    <th scope="col">Responsible 2</th>
+                    <th scope="col">Release</th>
+                    <th scope="col">Estimated Hours</th>
+                    <th scope="col">Actual Hours</th>
+                    <th scope="col">FRS Menu</th>
+                    <th scope="col">Url / Menu / Workflow</th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Task Completed Time</th>
+                    <th scope="col">Task Creation Date</th>
+                    <th scope="col">QA Responsible</th>
+                    <th scope="col">QA Done Time</th>
+                    <th scope="col">Review</th>
+                    <th scope="col">Review Remarks</th>
+                    <th scope="col">Test Case Functional</th>
+                    <th scope="col">Test Feature And Scenario</th>
+                    <th scope="col">Web Request Key</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var (item, index) in Tasks.Select((value, index) => (value, index)))
+                {
+                    <tr>
+                        <th scope="row">@(index + 1)</th>
+                        <td>@item.Status</td>
+                        <td>@item.Priority</td>
+                        <td>@item.Title</td>
+                        <td>@item.Project</td>
+                        <td>@item.UXDesignLink</td>
+                        <td>@item.Group</td>
+                        <td>@item.EntryBy</td>
+                        <td>@item.Responsible1</td>
+                        <td>@item.Responsible2</td>
+                        <td>@item.Release</td>
+                        <td>@item.EstimatedHours</td>
+                        <td>@item.ActualHours</td>
+                        <td>@item.FRSMenuLink</td>
+                        <td>@item.UrlOrMenuOrWorkflow</td>
+                        <td>@item.Remarks</td>
+                        <td>@item.TaskCompletedTime</td>
+                        <td>@item.TaskCreationDate</td>
+                        <td>@item.QAResponsible</td>
+                        <td>@item.QADoneTime</td>
+                        <td>@item.Review</td>
+                        <td>@item.ReviewRemarks</td>
+                        <td>@item.TestCaseFunctional</td>
+                        <td>@item.TestFeatureAndScenario</td>
+                        <td>@item.WebRequestKey</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

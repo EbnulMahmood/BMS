@@ -14,9 +14,12 @@ namespace BMS.BlazorWebApp.Pages.DevTask
         protected DevTaskViewModelCreate ViewModelCreate { get; set; }
         protected EditContext editContext;
         protected bool isInvalidForm = true;
+        private readonly string _tasksUrl = "/Tasks";
 
         [Inject]
         public ITaskService TaskService { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         protected override void OnInitialized()
         {
@@ -36,6 +39,7 @@ namespace BMS.BlazorWebApp.Pages.DevTask
             try
             {
                 await TaskService.SaveTaskAsync(ViewModelCreate);
+                NavigateToTasks();
             }
             catch (Exception)
             {
@@ -55,6 +59,10 @@ namespace BMS.BlazorWebApp.Pages.DevTask
         #endregion
 
         #region Helper Function
+        protected void NavigateToTasks()
+        {
+            NavigationManager.NavigateTo(_tasksUrl);
+        }
         #endregion
     }
 }
