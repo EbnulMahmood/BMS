@@ -10,5 +10,6 @@ namespace BMS.Plugins.EFCore.Data
         }
 
         public DbSet<DevTask> Tasks { get; set; }
+        public DbSet<Project> Projects { get; set; }
     }
 }
