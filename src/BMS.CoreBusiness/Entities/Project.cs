@@ -1,10 +1,9 @@
-﻿namespace BMS.CoreBusiness.Entities
+﻿using BMS.CoreBusiness.Base;
+
+namespace BMS.CoreBusiness.Entities
 {
-    public sealed class Project
+    public sealed class Project : BaseEntity<Guid>, IEntity
     {
-        public Guid Id { get; set; }
         public string? Name { get; set; }
-        public DateTimeOffset CreationDate { get; set; }
-        public DateTimeOffset ModificationDate { get; set; }
     }
 }

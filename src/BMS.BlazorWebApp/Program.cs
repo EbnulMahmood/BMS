@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BMSDbContext")));
+builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BMSDbContext"), b => b.MigrationsAssembly("BMS.BlazorWebApp")));
 
 builder.Services.AddBMSRepositories();
 builder.Services.AddBMSServices();
