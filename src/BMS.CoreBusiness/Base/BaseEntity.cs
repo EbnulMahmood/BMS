@@ -1,5 +1,4 @@
-﻿using BMS.CoreBusiness.Entities;
-using BMS.CoreBusiness.Enums;
+﻿using BMS.CoreBusiness.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace BMS.CoreBusiness.Base

@@ -8,17 +8,19 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using BMS.BlazorWebApp.Securities;
 using Microsoft.AspNetCore.Authorization;
+using BMS.BlazorWebApp.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+GlobalAppSettings.BMSMSSql = builder.Configuration.GetConnectionString(Constants.connectionStringName);
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<TokenProvider>();
 
-builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BMSDbContext"), b => b.MigrationsAssembly("BMS.BlazorWebApp")));
+builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(GlobalAppSettings.BMSMSSql, b => b.MigrationsAssembly(Constants.migrationsAssemblyName)));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BMSDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<BMSDbContext>();
 
 builder.Services.AddBMSRepositories();
 builder.Services.AddBMSServices();
@@ -29,7 +31,7 @@ builder.Services.Configure<OpenIdConnectOptions>(
         options.ResponseType = OpenIdConnectResponseType.Code;
         options.SaveTokens = true;
 
-        options.Scope.Add("offline_access");
+        options.Scope.Add(Constants.offlineAccess);
     });
 
 builder.Services.AddRazorPages();
@@ -41,7 +43,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler(Constants.errorPage);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -52,8 +54,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.MapFallbackToPage(Constants.hostPage);
 
 app.MapBlazorHub().RequireAuthorization(
     new AuthorizeAttribute
