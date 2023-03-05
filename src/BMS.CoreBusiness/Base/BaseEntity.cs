@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.Enums;
+﻿using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace BMS.CoreBusiness.Base
@@ -14,19 +15,19 @@ namespace BMS.CoreBusiness.Base
         }
 
         [Required]
-        public TId CreatedBy { get; protected init; }
-        object IEntity.CreatedBy
+        public TId CreatedById { get; protected init; }
+        object IEntity.CreatedById
         {
-            get { return CreatedBy; }
+            get { return CreatedById; }
             init { }
         }
 
         [Required]
         public DateTimeOffset CreatedOnUtc { get; init; }
-        public TId LastModifiedBy { get; protected init; }
-        object IEntity.LastModifiedBy
+        public TId LastModifiedById { get; protected init; }
+        object IEntity.LastModifiedById
         {
-            get { return LastModifiedBy; }
+            get { return LastModifiedById; }
             init { }
         }
 

@@ -1,11 +1,12 @@
 ﻿using BMS.CoreBusiness.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BMS.Plugins.EFCore.Data
 {
-    public sealed class BMSDbContext : DbContext
+    public sealed class BMSDbContext : IdentityDbContext<ApplicationUser>
     {
-        public BMSDbContext(DbContextOptions options) : base(options)
+        public BMSDbContext(DbContextOptions<BMSDbContext> options) : base(options)
         {
         }
 
