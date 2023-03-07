@@ -5,7 +5,7 @@ namespace BMS.UseCases.PluginIRepositories
     public interface IProjectRepository
     {
         #region Operational Function
-        Task SaveProjectAsync(Project project);
+        Task SaveProjectAsync(Project project, CancellationToken token = default);
         #endregion
 
         #region Single Instances Loading Function

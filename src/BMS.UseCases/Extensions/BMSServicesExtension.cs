@@ -8,7 +8,9 @@ namespace BMS.UseCases.Extensions
         public static void AddBMSServices(this IServiceCollection services)
         {
             #region Register All Services
+            services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IProjectService, ProjectService>();
             #endregion
         }
     }

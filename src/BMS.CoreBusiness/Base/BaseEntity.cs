@@ -14,7 +14,7 @@ namespace BMS.CoreBusiness.Base
         }
 
         [Required]
-        public TId CreatedById { get; protected init; }
+        public TId CreatedById { get; init; }
         object IEntity.CreatedById
         {
             get { return CreatedById; }
@@ -23,7 +23,7 @@ namespace BMS.CoreBusiness.Base
 
         [Required]
         public DateTimeOffset CreatedOnUtc { get; init; }
-        public TId LastModifiedById { get; protected init; }
+        public TId LastModifiedById { get; init; }
         object IEntity.LastModifiedById
         {
             get { return LastModifiedById; }

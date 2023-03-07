@@ -16,11 +16,11 @@ namespace BMS.Plugins.EFCore.Repositories
         #endregion
 
         #region Operational Function
-        public async Task SaveProjectAsync(Project project)
+        public async Task SaveProjectAsync(Project project, CancellationToken token = default)
         {
             try
             {
-                await _context.Projects.AddAsync(project);
+                await _context.Projects.AddAsync(project, token);
                 await _context.SaveChangesAsync();
             }
             catch (Exception)

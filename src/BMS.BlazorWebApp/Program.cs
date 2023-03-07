@@ -27,6 +27,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddBMSRepositories();
 builder.Services.AddBMSServices();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.Configure<OpenIdConnectOptions>(
     OpenIdConnectDefaults.AuthenticationScheme, options =>
     {
