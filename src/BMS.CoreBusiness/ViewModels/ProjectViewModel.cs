@@ -1,5 +1,4 @@
-﻿using BMS.CoreBusiness.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BMS.CoreBusiness.ViewModels
 {

@@ -7,10 +7,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    var tokens = new InitialApplicationState
+    var tokens = new TokenProvider
     {
-        AccessToken = await HttpContext.GetTokenAsync("access_token"),
-        RefreshToken = await HttpContext.GetTokenAsync("refresh_token"),
         XsrfToken = Xsrf.GetAndStoreTokens(HttpContext).RequestToken
     };
 }
