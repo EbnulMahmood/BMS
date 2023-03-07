@@ -1,5 +1,4 @@
-﻿using BMS.CoreBusiness.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BMS.CoreBusiness.Base
 {
@@ -32,8 +31,8 @@ namespace BMS.CoreBusiness.Base
 
         public DateTimeOffset? LastModifiedOnUtc { get; init; }
         public string IPAddress { get; init; } = string.Empty;
-        public Status Status { get; init; }
         [Timestamp]
         public byte[] RowVersion { get; init; }
+        public bool IsDeleted { get; init; }
     }
 }

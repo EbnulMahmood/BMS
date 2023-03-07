@@ -21,7 +21,7 @@ namespace BMS.Plugins.EFCore.Repositories
             try
             {
                 await _context.Projects.AddAsync(project, token);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(token);
             }
             catch (Exception)
             {

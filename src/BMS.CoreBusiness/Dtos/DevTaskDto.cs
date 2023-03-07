@@ -6,7 +6,7 @@ namespace BMS.CoreBusiness.Dtos
     {
         public Guid Id { get; set; }
         public string? Title { get; set; }
-        public Status Status { get; set; }
+        public DevTaskStatus Status { get; set; }
         public Priority Priority { get; set; }
         public string? Project { get; set; }
         public string? UXDesignLink { get; set; }

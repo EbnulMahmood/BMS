@@ -1,6 +1,4 @@
-﻿using BMS.CoreBusiness.Enums;
-
-namespace BMS.CoreBusiness.Base
+﻿namespace BMS.CoreBusiness.Base
 {
     public interface IEntity
     {
@@ -10,7 +8,7 @@ namespace BMS.CoreBusiness.Base
         object LastModifiedById { get; init; }
         public DateTimeOffset? LastModifiedOnUtc { get; init; }
         public string IPAddress { get; init; }
-        public Status Status { get; init; }
         public byte[] RowVersion { get; init; }
+        public bool IsDeleted { get; init; }
     }
 }

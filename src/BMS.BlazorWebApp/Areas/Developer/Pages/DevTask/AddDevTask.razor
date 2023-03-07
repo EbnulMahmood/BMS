@@ -1,4 +1,4 @@
-﻿@page "/AddTask"
+﻿@page "/Developer/AddTask"
 @using BMS.CoreBusiness.Enums;
 @inherits AddDevTaskBase
 
@@ -13,7 +13,7 @@
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="status" class="control-label">Status</label>
                 <InputSelect @bind-Value="@ViewModelCreate.Status" id="status" class="form-select">
-                    @foreach (var value in Enum.GetValues(typeof(Status)))
+                    @foreach (var value in Enum.GetValues(typeof(CoreBusiness.Enums.DevTaskStatus)))
                     {
                         <option>@value</option>
                     }

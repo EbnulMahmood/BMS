@@ -11,6 +11,5 @@ namespace BMS.CoreBusiness.Dtos
         public Guid LastModifiedById { get; init; }
         public DateTimeOffset? LastModifiedOnUtc { get; init; }
         public string IPAddress { get; init; }
-        public Status Status { get; init; }
     }
 }

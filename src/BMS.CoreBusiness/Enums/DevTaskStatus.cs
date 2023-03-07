@@ -1,6 +1,6 @@
 ﻿namespace BMS.CoreBusiness.Enums
 {
-    public enum Status
+    public enum DevTaskStatus
     {
         Pending = 10,
         Running = 20,

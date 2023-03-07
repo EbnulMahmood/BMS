@@ -44,7 +44,7 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+                if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
 
                 var devTask = new DevTask
                 {

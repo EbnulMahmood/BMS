@@ -22,7 +22,7 @@ namespace BMS.Plugins.EFCore.Repositories
             try
             {
                 await _context.Tasks.AddAsync(devTask, token);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(token);
             }
             catch (Exception)
             {
@@ -79,7 +79,7 @@ namespace BMS.Plugins.EFCore.Repositories
                                       })
                                //.Where(deletePredicate)
                                //.Where(conditionPredicate)
-                               .ToListAsync(cancellationToken: token);
+                               .ToListAsync(token);
 
                 return (taskList, recordsCount);
             }

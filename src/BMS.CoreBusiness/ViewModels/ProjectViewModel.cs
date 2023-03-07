@@ -8,11 +8,10 @@ namespace BMS.CoreBusiness.ViewModels
         [Required]
         [StringLength(255, ErrorMessage = "Name is too long")]
         public string? Name { get; set; }
-        public Guid CreatedById { get; init; }
-        public DateTimeOffset CreatedOnUtc { get; init; }
-        public Guid LastModifiedById { get; init; }
-        public DateTimeOffset? LastModifiedOnUtc { get; init; }
-        public string IPAddress { get; init; }
-        public Status Status { get; init; }
+        public Guid CreatedById { get; set; }
+        public DateTimeOffset CreatedOnUtc { get; set; }
+        public Guid LastModifiedById { get; set; }
+        public DateTimeOffset? LastModifiedOnUtc { get; set; }
+        public string IPAddress { get; set; }
     }
 }

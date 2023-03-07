@@ -6,6 +6,7 @@ namespace BMS.CoreBusiness.Entities
     public sealed class DevTask : BaseEntity<Guid>, IEntity
     {
         public string? Title { get; init; }
+        public DevTaskStatus Status { get; set; }
         public Priority Priority { get; init; }
         public string? Project { get; init; }
         public string? UXDesignLink { get; init; }

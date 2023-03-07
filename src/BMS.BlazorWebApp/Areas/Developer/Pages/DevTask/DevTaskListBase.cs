@@ -2,7 +2,7 @@
 using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace BMS.BlazorWebApp.Pages.Tasks
+namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 {
     public class DevTaskListBase : ComponentBase
     {

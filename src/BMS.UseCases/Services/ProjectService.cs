@@ -1,13 +1,13 @@
 ﻿using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories;
-using Microsoft.AspNetCore.Http;
 
 namespace BMS.UseCases.Services
 {
     public interface IProjectService
     {
         #region Operational Function
+        Task SaveProjectAsync(ProjectViewModelCreate viewModel, CancellationToken token = default);
         #endregion
 
         #region Single Instances Loading Function
@@ -45,17 +45,16 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+                if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
 
                 var project = new Project
                 {
-                    Name = viewModel.Name,
+                    Name = viewModel.Name?.Trim(),
                     CreatedById = _commonService.GetCurrentUserId(),
                     CreatedOnUtc = DateTimeOffset.UtcNow,
                     LastModifiedById = _commonService.GetCurrentUserId(),
                     LastModifiedOnUtc = DateTimeOffset.UtcNow,
                     IPAddress = _commonService.RemoteIpAddress,
-                    Status = viewModel.Status,
                 };
 
                 await _repository.SaveProjectAsync(project, token);

@@ -11,7 +11,7 @@ namespace BMS.CoreBusiness.ViewModels
         [DisplayName("Task")]
         public string? Title { get; set; }
         [Required]
-        public Status Status { get; set; }
+        public DevTaskStatus Status { get; set; }
         [Required]
         public Priority Priority { get; set; }
         [Required]

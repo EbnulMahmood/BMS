@@ -3,21 +3,21 @@ using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BMS.BlazorWebApp.Pages.DevTask
+namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 {
-    public class AddDevTaskBase : ComponentBase
+    public class AddProjectBase : ComponentBase
     {
         #region Logger
         #endregion
 
         #region Properties & Object Initialization
-        protected DevTaskViewModelCreate ViewModelCreate { get; set; }
+        protected ProjectViewModelCreate ViewModelCreate { get; set; }
         protected EditContext editContext;
         protected bool isInvalidForm = true;
-        private readonly string _tasksUrl = "/Tasks";
+        protected readonly string _projectsUrl = "/Projects";
 
         [Inject]
-        public ITaskService TaskService { get; set; }
+        public IProjectService ProjectService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
@@ -38,8 +38,8 @@ namespace BMS.BlazorWebApp.Pages.DevTask
         {
             try
             {
-                await TaskService.SaveTaskAsync(ViewModelCreate);
-                NavigateToTasks();
+                await ProjectService.SaveProjectAsync(ViewModelCreate);
+                //NavigateToTasks();
             }
             catch (Exception)
             {
@@ -61,7 +61,7 @@ namespace BMS.BlazorWebApp.Pages.DevTask
         #region Helper Function
         protected void NavigateToTasks()
         {
-            NavigationManager.NavigateTo(_tasksUrl);
+            NavigationManager.NavigateTo(_projectsUrl);
         }
         #endregion
     }
