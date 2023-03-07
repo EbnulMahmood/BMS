@@ -9,16 +9,18 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using BMS.BlazorWebApp.Securities;
 using Microsoft.AspNetCore.Authorization;
 using BMS.BlazorWebApp.Settings;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 GlobalAppSettings.BMSMSSql = builder.Configuration.GetConnectionString(Constants.connectionStringName);
+GlobalAppSettings.MigrationsAssemblyName = Assembly.GetExecutingAssembly().FullName;
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<TokenProvider>();
 
-builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(GlobalAppSettings.BMSMSSql, b => b.MigrationsAssembly(Constants.migrationsAssemblyName)));
+builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(GlobalAppSettings.BMSMSSql, b => b.MigrationsAssembly(GlobalAppSettings.MigrationsAssemblyName)));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<BMSDbContext>();
 

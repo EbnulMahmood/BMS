@@ -2,6 +2,7 @@
 {
     public static class GlobalAppSettings
     {
-        public static string? BMSMSSql { set; get; }
+        public static string? BMSMSSql { get; set; }
+        public static string? MigrationsAssemblyName { get; set; }
     }
 }

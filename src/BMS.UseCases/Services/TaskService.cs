@@ -8,7 +8,7 @@ namespace BMS.UseCases.Services
     public interface ITaskService
     {
         #region Operational Function
-        Task SaveTaskAsync(DevTaskViewModelCreate viewModel);
+        Task SaveTaskAsync(DevTaskViewModelCreate viewModel, CancellationToken token = default);
         #endregion
 
         #region Single Instances Loading Function
@@ -40,7 +40,7 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Operational Function
-        public async Task SaveTaskAsync(DevTaskViewModelCreate viewModel)
+        public async Task SaveTaskAsync(DevTaskViewModelCreate viewModel, CancellationToken token = default)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace BMS.UseCases.Services
                     WebRequestKey = viewModel.WebRequestKey?.Trim(),
                 };
 
-                await _repository.SaveTaskAsync(devTask);
+                await _repository.SaveTaskAsync(devTask, token);
             }
             catch (Exception)
             {

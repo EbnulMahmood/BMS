@@ -1,5 +1,4 @@
 ﻿using BMS.Plugins.EFCore.Repositories;
-using BMS.UseCases.Extensions;
 using BMS.UseCases.PluginIRepositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +10,7 @@ namespace BMS.Plugins.EFCore.Extensions
         {
             #region Register All Repositories
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
             #endregion
         }
     }
