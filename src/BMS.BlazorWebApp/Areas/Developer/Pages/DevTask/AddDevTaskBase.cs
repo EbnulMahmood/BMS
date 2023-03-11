@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.ViewModels;
+﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -12,6 +13,8 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 
         #region Properties & Object Initialization
         protected DevTaskViewModelCreate ViewModelCreate { get; set; }
+        [Parameter]
+        public IEnumerable<ProjectDto> ProjectDtoList { get; set; } = new List<ProjectDto>();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
         private readonly string _tasksUrl = "/Tasks";
@@ -19,12 +22,15 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         [Inject]
         public ITaskService TaskService { get; set; }
         [Inject]
+        public IProjectService ProjectService { get; set; }
+        [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             ViewModelCreate = new();
             editContext = new EditContext(ViewModelCreate);
+            ProjectDtoList = await ProjectService.LoadProjectAsync();
 
             editContext.OnFieldChanged += (x, y) =>
             {

@@ -1,6 +1,7 @@
 ﻿using BMS.CoreBusiness.Entities;
 using BMS.Plugins.EFCore.Data;
 using BMS.UseCases.PluginIRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BMS.Plugins.EFCore.Repositories
 {
@@ -35,6 +36,25 @@ namespace BMS.Plugins.EFCore.Repositories
         #endregion
 
         #region List Loading Function
+        public async Task<IEnumerable<Project>> LoadProjectAsync()
+        {
+            try
+            {
+                return await _context.Projects
+                        .Where(x => x.IsDeleted == false)
+                        .Select(x => new Project
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                        })
+                        .ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
 
         #region Others Function

@@ -5,7 +5,7 @@ namespace BMS.CoreBusiness.Base
     public abstract class BaseEntity<TId> : IEntity
     {
         [Required]
-        public TId Id { get; protected init; }
+        public TId Id { get; init; }
         object IEntity.Id
         {
             get { return Id; }

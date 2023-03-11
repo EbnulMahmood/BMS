@@ -12,6 +12,7 @@ namespace BMS.UseCases.PluginIRepositories
         #endregion
 
         #region List Loading Function
+        Task<IEnumerable<Project>> LoadProjectAsync();
         #endregion
 
         #region Others Function

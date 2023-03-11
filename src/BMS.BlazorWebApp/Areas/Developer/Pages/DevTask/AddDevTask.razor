@@ -32,7 +32,13 @@
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="project" class="control-label">Project</label>
-                <InputText @bind-Value="@ViewModelCreate.Project" id="project" class="form-control" />
+                @*<InputText @bind-Value="@ViewModelCreate.Project" id="project" class="form-control" />*@
+                <InputSelect @bind-Value="@ViewModelCreate.Priority" id="priority" class="form-select">
+                    @foreach (var item in ProjectDtoList)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </InputSelect>
                 <ValidationMessage For="@(() => ViewModelCreate.Project)" />
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">

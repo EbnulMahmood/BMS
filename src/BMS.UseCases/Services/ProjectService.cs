@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.Entities;
+﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories;
 
@@ -14,6 +15,7 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region List Loading Function
+        Task<IEnumerable<ProjectDto>> LoadProjectAsync();
         #endregion
 
         #region Others Function
@@ -71,6 +73,25 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region List Loading Function
+        public async Task<IEnumerable<ProjectDto>> LoadProjectAsync()
+        {
+            try
+            {
+                var projectList = await _repository.LoadProjectAsync();
+
+                return from project in projectList
+                       select new ProjectDto
+                       {
+                           Id = project.Id,
+                           Name = project.Name,
+                       };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
 
         #region Others Function
