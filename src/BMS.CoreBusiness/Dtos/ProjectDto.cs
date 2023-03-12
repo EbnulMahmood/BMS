@@ -2,7 +2,7 @@
 
 namespace BMS.CoreBusiness.Dtos
 {
-    public sealed class ProjectDto
+    public sealed record ProjectDto
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }

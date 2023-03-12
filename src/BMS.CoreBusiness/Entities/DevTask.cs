@@ -3,12 +3,13 @@ using BMS.CoreBusiness.Enums;
 
 namespace BMS.CoreBusiness.Entities
 {
-    public sealed class DevTask : BaseEntity<Guid>, IEntity
+    public sealed record DevTask : BaseEntity<Guid>, IEntity
     {
         public string? Title { get; init; }
         public DevTaskStatus Status { get; set; }
         public Priority Priority { get; init; }
-        public string? Project { get; init; }
+        public Guid ProjectId { get; set; }
+        public Project Project { get; init; }
         public string? UXDesignLink { get; init; }
         public string? Group { get; init; }
         public string? EntryBy { get; init; }

@@ -36,7 +36,7 @@ namespace BMS.Plugins.EFCore.Repositories
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<Project>> LoadProjectAsync()
+        public async Task<IEnumerable<Project>> LoadProjectAsync(CancellationToken token = default)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace BMS.Plugins.EFCore.Repositories
                             Id = x.Id,
                             Name = x.Name,
                         })
-                        .ToListAsync();
+                        .ToListAsync(token);
             }
             catch (Exception)
             {

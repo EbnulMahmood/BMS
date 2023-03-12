@@ -2,7 +2,7 @@
 
 namespace BMS.CoreBusiness.ViewModels
 {
-    public sealed class ProjectViewModelCreate
+    public sealed record ProjectViewModelCreate
     {
         [Required]
         [StringLength(255, ErrorMessage = "Name is too long")]

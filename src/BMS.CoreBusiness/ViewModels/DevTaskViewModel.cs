@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BMS.CoreBusiness.ViewModels
 {
-    public class DevTaskViewModelCreate
+    public record DevTaskViewModelCreate
     {
         [Required]
         [StringLength(255, ErrorMessage = "Title is too long")]
@@ -44,7 +44,7 @@ namespace BMS.CoreBusiness.ViewModels
         public string? WebRequestKey { get; set; }
     }
 
-    public sealed class DevTaskViewModelEdit : DevTaskViewModelCreate
+    public sealed record DevTaskViewModelEdit : DevTaskViewModelCreate
     {
         public Guid Id { get; set; }
     }

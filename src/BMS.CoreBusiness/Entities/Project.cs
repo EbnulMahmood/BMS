@@ -2,7 +2,7 @@
 
 namespace BMS.CoreBusiness.Entities
 {
-    public sealed class Project : BaseEntity<Guid>, IEntity
+    public sealed record Project : BaseEntity<Guid>, IEntity
     {
         public string? Name { get; set; }
     }

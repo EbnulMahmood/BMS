@@ -12,19 +12,18 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         #endregion
 
         #region Properties & Object Initialization
-        protected DevTaskViewModelCreate ViewModelCreate { get; set; }
-        [Parameter]
-        public IEnumerable<ProjectDto> ProjectDtoList { get; set; } = new List<ProjectDto>();
+        protected DevTaskViewModelCreate ViewModelCreate { get; private set; }
+        public IEnumerable<ProjectDto> ProjectDtoList { get; private set; } = new List<ProjectDto>();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
         private readonly string _tasksUrl = "/Tasks";
 
         [Inject]
-        public ITaskService TaskService { get; set; }
+        public ITaskService TaskService { get; private set; }
         [Inject]
-        public IProjectService ProjectService { get; set; }
+        public IProjectService ProjectService { get; private set; }
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager NavigationManager { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {

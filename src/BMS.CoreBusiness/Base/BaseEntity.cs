@@ -2,7 +2,7 @@
 
 namespace BMS.CoreBusiness.Base
 {
-    public abstract class BaseEntity<TId> : IEntity
+    public abstract record BaseEntity<TId> : IEntity
     {
         [Required]
         public TId Id { get; init; }

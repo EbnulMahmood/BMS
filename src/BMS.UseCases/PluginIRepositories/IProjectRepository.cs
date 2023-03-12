@@ -12,7 +12,7 @@ namespace BMS.UseCases.PluginIRepositories
         #endregion
 
         #region List Loading Function
-        Task<IEnumerable<Project>> LoadProjectAsync();
+        Task<IEnumerable<Project>> LoadProjectAsync(CancellationToken token = default);
         #endregion
 
         #region Others Function

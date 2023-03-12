@@ -15,7 +15,7 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region List Loading Function
-        Task<IEnumerable<ProjectDto>> LoadProjectAsync();
+        Task<IEnumerable<ProjectDto>> LoadProjectAsync(CancellationToken token = default);
         #endregion
 
         #region Others Function
@@ -73,11 +73,11 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<ProjectDto>> LoadProjectAsync()
+        public async Task<IEnumerable<ProjectDto>> LoadProjectAsync(CancellationToken token = default)
         {
             try
             {
-                var projectList = await _repository.LoadProjectAsync();
+                var projectList = await _repository.LoadProjectAsync(token);
 
                 return from project in projectList
                        select new ProjectDto

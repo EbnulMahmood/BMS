@@ -2,7 +2,7 @@
 
 namespace BMS.CoreBusiness.Dtos
 {
-    public sealed class DevTaskDto
+    public sealed record DevTaskDto
     {
         public Guid Id { get; set; }
         public string? Title { get; set; }
