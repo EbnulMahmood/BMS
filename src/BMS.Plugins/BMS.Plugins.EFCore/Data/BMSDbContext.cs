@@ -1,4 +1,5 @@
 ﻿using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Entities.Membership;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

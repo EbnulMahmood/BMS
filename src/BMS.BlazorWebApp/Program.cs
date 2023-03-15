@@ -3,10 +3,11 @@ using BMS.Plugins.EFCore.Data;
 using BMS.Plugins.EFCore.Extensions;
 using BMS.UseCases.Extensions;
 using Microsoft.EntityFrameworkCore;
-using BMS.CoreBusiness.Entities;
 using BMS.BlazorWebApp.Securities;
 using BMS.BlazorWebApp.Settings;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using BMS.CoreBusiness.Entities.Membership;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,9 @@ builder.Services.AddScoped<TokenProvider>();
 
 builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(GlobalAppSettings.BMSMSSql, b => b.MigrationsAssembly(GlobalAppSettings.MigrationsAssemblyName)));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<BMSDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<BMSDbContext>();
 
 builder.Services.AddBMSRepositories();
 builder.Services.AddBMSServices();
@@ -29,6 +32,16 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireClaim("Admin"));
+    options.AddPolicy("DeveloperOnly", policy =>
+        policy.RequireClaim("Developer"));
+    options.AddPolicy("QAOnly", policy =>
+        policy.RequireClaim("QA"));
+});
 
 var app = builder.Build();
 

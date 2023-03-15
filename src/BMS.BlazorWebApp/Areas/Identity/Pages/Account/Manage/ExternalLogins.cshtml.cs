@@ -3,6 +3,7 @@
 #nullable disable
 
 using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Entities.Membership;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

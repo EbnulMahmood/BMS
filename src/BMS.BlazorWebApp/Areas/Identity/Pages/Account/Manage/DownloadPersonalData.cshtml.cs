@@ -3,7 +3,7 @@
 #nullable disable
 
 using System.Text.Json;
-using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Entities.Membership;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

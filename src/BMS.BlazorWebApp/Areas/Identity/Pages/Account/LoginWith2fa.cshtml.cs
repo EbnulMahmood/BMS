@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
-using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Entities.Membership;
 
 namespace BMS.BlazorWebApp.Areas.Identity.Pages.Account
 {

@@ -1,0 +1,35 @@
+﻿@page "/Administrator/Manage"
+@inherits ManageBase
+
+<PageTitle>Administrator</PageTitle>
+
+<h3>Administrator</h3>
+
+<EditForm EditContext="@editContext" OnSubmit="async () => await HandleSubmitAsync()">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <h3>Add User</h3>
+        <div class="row pb-2">
+            <div class="form-group col-xl-2 col-md-2 col-sm-12">
+                <label for="loginName" class="control-label">Name</label>
+                <InputText @bind-Value="@NewUser.LoginName" id="loginName" class="form-control" />
+                <ValidationMessage For="@(() => NewUser.LoginName)" />
+            </div>
+            <div class="form-group col-xl-2 col-md-2 col-sm-12">
+                <label for="role" class="control-label">Role</label>
+                <InputSelect @bind-Value="@NewUser.UserRole" id="role" class="form-select">
+                    @foreach (var item in RoleList)
+                    {
+                        <option value="@item.Id">@item.RoleName</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => NewUser.UserRole)" />
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="form-group col-xl-6 col-md-2 col-sm-12">
+                <button disabled="@isInvalidForm" type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</EditForm>

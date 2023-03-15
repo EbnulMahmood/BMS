@@ -3,7 +3,7 @@
 #nullable disable
 
 using System.Text;
-using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Entities.Membership;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
