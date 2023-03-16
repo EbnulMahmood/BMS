@@ -1,4 +1,3 @@
-using BMS.BlazorWebApp.Data;
 using BMS.Plugins.EFCore.Data;
 using BMS.Plugins.EFCore.Extensions;
 using BMS.UseCases.Extensions;
@@ -31,7 +30,6 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddAuthorization(options =>
 {
