@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BMS.Plugins.EFCore.Repositories
 {
-    public sealed class TaskRepository : ITaskRepository
+    internal sealed class TaskRepository : ITaskRepository
     {
         #region Properties & Object Initialization
         private readonly BMSDbContext _context;

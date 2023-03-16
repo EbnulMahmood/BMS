@@ -1,7 +1,5 @@
-﻿using BMS.CoreBusiness.Entities.Membership;
-using BMS.CoreBusiness.ViewModels.Membership;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+﻿using BMS.CoreBusiness.ViewModels.Membership;
+using BMS.UseCases.PluginIRepositories.Membership;
 
 namespace BMS.UseCases.Services.Membership
 {
@@ -24,19 +22,17 @@ namespace BMS.UseCases.Services.Membership
         #endregion
     }
 
-    public sealed class UserManagerService : IUserManagerService
+    internal sealed class UserManagerService : IUserManagerService
     {
         #region Logger
         #endregion
 
         #region Properties & Object Initialization
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUserManagerRepository _userManagerRepository;
 
-        public UserManagerService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserManagerService(IUserManagerRepository userManagerRepository)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userManagerRepository = userManagerRepository;
         }
         #endregion
 
@@ -45,27 +41,7 @@ namespace BMS.UseCases.Services.Membership
         {
             try
             {
-                string message = "Something Went Wrong!";
-
-                var applicationUser = new ApplicationUser
-                {
-                    UserName = userViewModel.LoginName,
-                    Email = userViewModel.LoginName,
-                    EmailConfirmed = true
-                };
-
-                var result = await _userManager.CreateAsync(applicationUser, "@E0b0nul");
-
-                if (result.Succeeded)
-                {
-                    message = "New User Added!";
-                    var role = _roleManager.Roles.FirstOrDefault(x => x.Id == userViewModel.UserRole);
-                    var roleAddedResult = await _userManager.AddToRoleAsync(applicationUser, role?.Name ?? "User");
-                    if (roleAddedResult.Succeeded) { message = "New User and Role Added!"; }
-
-                    var claimAddedResult = await _userManager.AddClaimAsync(applicationUser, new Claim(role?.Name ?? "User", role?.Id ?? ""));
-                    if (claimAddedResult.Succeeded) { message = "New User, Role and Claim Added!"; }
-                }
+                await _userManagerRepository.SaveUserAsync(userViewModel);
             }
             catch (Exception)
             {

@@ -23,7 +23,7 @@ namespace BMS.UseCases.Services
         #endregion
     }
 
-    public sealed class CommonService : ICommonService
+    internal sealed class CommonService : ICommonService
     {
         #region Logger
         #endregion

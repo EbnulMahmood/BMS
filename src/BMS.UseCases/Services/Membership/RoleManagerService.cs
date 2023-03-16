@@ -1,5 +1,5 @@
 ﻿using BMS.CoreBusiness.ViewModels.Membership;
-using Microsoft.AspNetCore.Identity;
+using BMS.UseCases.PluginIRepositories.Membership;
 
 namespace BMS.UseCases.Services.Membership
 {
@@ -22,17 +22,17 @@ namespace BMS.UseCases.Services.Membership
         #endregion
     }
 
-    public sealed class RoleManagerService : IRoleManagerService
+    internal sealed class RoleManagerService : IRoleManagerService
     {
         #region Logger
         #endregion
 
         #region Properties & Object Initialization
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IRoleManagerRepository _roleManagerRepository;
 
-        public RoleManagerService(RoleManager<IdentityRole> roleManager)
+        public RoleManagerService(IRoleManagerRepository roleManagerRepository)
         {
-            _roleManager = roleManager;
+            _roleManagerRepository = roleManagerRepository;
         }
         #endregion
 
@@ -47,14 +47,7 @@ namespace BMS.UseCases.Services.Membership
         {
             try
             {
-                var roleList = _roleManager.Roles.ToList();
-
-                return from role in roleList
-                       select new RoleViewModel
-                       {
-                           RoleName = role.Name,
-                           Id = role.Id,
-                       };
+                return _roleManagerRepository.LoadRole();
             }
             catch (Exception)
             {

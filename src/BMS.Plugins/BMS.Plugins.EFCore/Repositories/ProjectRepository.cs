@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BMS.Plugins.EFCore.Repositories
 {
-    public sealed class ProjectRepository : IProjectRepository
+    internal sealed class ProjectRepository : IProjectRepository
     {
         #region Properties & Object Initialization
         private readonly BMSDbContext _context;

@@ -25,7 +25,7 @@ namespace BMS.UseCases.Services
         #endregion
     }
 
-    public sealed class TaskService : ITaskService
+    internal sealed class TaskService : ITaskService
     {
         #region Logger
         #endregion

@@ -25,7 +25,7 @@ namespace BMS.UseCases.Services
         #endregion
     }
 
-    public sealed class ProjectService : IProjectService
+    internal sealed class ProjectService : IProjectService
     {
         #region Logger
         #endregion
