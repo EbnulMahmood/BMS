@@ -31,15 +31,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy =>
-        policy.RequireClaim("Admin"));
-    options.AddPolicy("DeveloperOnly", policy =>
-        policy.RequireClaim("Developer"));
-    options.AddPolicy("QAOnly", policy =>
-        policy.RequireClaim("QA"));
-});
+builder.Services.AddAuthorizationSettings();
 
 var app = builder.Build();
 
