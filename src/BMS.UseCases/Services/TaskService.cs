@@ -110,7 +110,7 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Helper Function
-        public static void DevTaskViewModelValidation(DevTaskViewModelCreate viewModel)
+        private static void DevTaskViewModelValidation(DevTaskViewModelCreate viewModel)
         {
             try
             {
