@@ -1,4 +1,5 @@
 ﻿using BMS.CoreBusiness.Base;
+using BMS.CoreBusiness.Entities.Membership;
 using BMS.CoreBusiness.Enums;
 
 namespace BMS.CoreBusiness.Entities
@@ -9,12 +10,11 @@ namespace BMS.CoreBusiness.Entities
         public DevTaskStatus Status { get; set; }
         public Priority Priority { get; init; }
         public Guid ProjectId { get; set; }
-        public Project Project { get; init; }
         public string? UXDesignLink { get; init; }
         public string? Group { get; init; }
-        public string? EntryBy { get; init; }
-        public string? Responsible1 { get; init; }
-        public string? Responsible2 { get; init; }
+        public string EntryById { get; set; } = string.Empty;
+        public string? Responsible1Id { get; init; } = string.Empty;
+        public string? Responsible2Id { get; init; }
         public int Release { get; init; }
         public decimal? EstimatedHours { get; init; }
         public decimal? ActualHours { get; init; }

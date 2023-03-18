@@ -4,6 +4,7 @@ using BMS.Plugins.EFCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMS.BlazorWebApp.Migrations
 {
     [DbContext(typeof(BMSDbContext))]
-    partial class BMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230318041722_UpdateProjectForeignKey")]
+    partial class UpdateProjectForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,6 +87,7 @@ namespace BMS.BlazorWebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Responsible1Id")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Responsible2Id")
@@ -399,7 +403,8 @@ namespace BMS.BlazorWebApp.Migrations
                     b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("Responsible1Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", null)
                         .WithMany()

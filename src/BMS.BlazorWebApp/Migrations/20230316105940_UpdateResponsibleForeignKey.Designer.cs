@@ -4,6 +4,7 @@ using BMS.Plugins.EFCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMS.BlazorWebApp.Migrations
 {
     [DbContext(typeof(BMSDbContext))]
-    partial class BMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230316105940_UpdateResponsibleForeignKey")]
+    partial class UpdateResponsibleForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +41,8 @@ namespace BMS.BlazorWebApp.Migrations
                     b.Property<DateTimeOffset>("CreatedOnUtc")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("EntryById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("EntryBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("EstimatedHours")
                         .HasPrecision(8, 2)
@@ -129,8 +131,6 @@ namespace BMS.BlazorWebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EntryById");
 
                     b.HasIndex("ProjectId");
 
@@ -384,27 +384,25 @@ namespace BMS.BlazorWebApp.Migrations
 
             modelBuilder.Entity("BMS.CoreBusiness.Entities.DevTask", b =>
                 {
-                    b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("EntryById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BMS.CoreBusiness.Entities.Project", null)
+                    b.HasOne("BMS.CoreBusiness.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", null)
+                    b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", "Responsible1")
                         .WithMany()
-                        .HasForeignKey("Responsible1Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("Responsible1Id");
 
-                    b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", null)
+                    b.HasOne("BMS.CoreBusiness.Entities.Membership.ApplicationUser", "Responsible2")
                         .WithMany()
-                        .HasForeignKey("Responsible2Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("Responsible2Id");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Responsible1");
+
+                    b.Navigation("Responsible2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -11,35 +11,26 @@
         <h3>Add Task</h3>
         <div class="row pb-2">
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
-                <label for="status" class="control-label">Status</label>
-                <InputSelect @bind-Value="@ViewModelCreate.Status" id="status" class="form-select">
-                    @foreach (var value in Enum.GetValues(typeof(CoreBusiness.Enums.DevTaskStatus)))
-                    {
-                        <option>@value</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => ViewModelCreate.Status)" />
-            </div>
-            <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="priority" class="control-label">Priority</label>
                 <InputSelect @bind-Value="@ViewModelCreate.Priority" id="priority" class="form-select">
+                    <option>--Select Priority--</option>
                     @foreach (var value in Enum.GetValues(typeof(Priority)))
                     {
                         <option>@value</option>
                     }
                 </InputSelect>
-                <ValidationMessage For="@(() => ViewModelCreate.Status)" />
+                <ValidationMessage For="@(() => ViewModelCreate.Priority)" />
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="project" class="control-label">Project</label>
-                @*<InputText @bind-Value="@ViewModelCreate.Project" id="project" class="form-control" />*@
-                <InputSelect @bind-Value="@ViewModelCreate.Priority" id="priority" class="form-select">
+                <InputSelect @bind-Value="@ViewModelCreate.ProjectId" id="project" class="form-select">
+                    <option>--Select Project--</option>
                     @foreach (var item in ProjectDtoList)
                     {
                         <option value="@item.Id">@item.Name</option>
                     }
                 </InputSelect>
-                <ValidationMessage For="@(() => ViewModelCreate.Project)" />
+                <ValidationMessage For="@(() => ViewModelCreate.ProjectId)" />
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="uXDesignLink" class="control-label">UX Design / Link</label>
@@ -50,11 +41,6 @@
                 <label for="group" class="control-label">Group</label>
                 <InputText @bind-Value="@ViewModelCreate.Group" id="group" class="form-control" />
                 <ValidationMessage For="@(() => ViewModelCreate.Group)" />
-            </div>
-            <div class="form-group col-xl-2 col-md-2 col-sm-12">
-                <label for="entryBy" class="control-label">Entry By</label>
-                <InputText @bind-Value="@ViewModelCreate.EntryBy" id="entryBy" class="form-control" />
-                <ValidationMessage For="@(() => ViewModelCreate.EntryBy)" />
             </div>
         </div>
 
@@ -82,13 +68,23 @@
         <div class="row pb-2">
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="responsible1" class="control-label">Responsible 1</label>
-                <InputText @bind-Value="@ViewModelCreate.Responsible1" id="responsible1" class="form-control" />
-                <ValidationMessage For="@(() => ViewModelCreate.Responsible1)" />
+                <InputSelect @bind-Value="@ViewModelCreate.Responsible1Id" id="responsible1" class="form-select">
+                    @foreach (var item in ResponsibleDeveloperDtoList)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => ViewModelCreate.Responsible1Id)" />
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="responsible2" class="control-label">Responsible 2</label>
-                <InputText @bind-Value="@ViewModelCreate.Responsible2" id="responsible2" class="form-control" />
-                <ValidationMessage For="@(() => ViewModelCreate.Responsible2)" />
+                <InputSelect @bind-Value="@ViewModelCreate.Responsible2Id" id="responsible2" class="form-select">
+                    @foreach (var item in ResponsibleDeveloperDtoList)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => ViewModelCreate.Responsible2Id)" />
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="release" class="control-label">Release</label>

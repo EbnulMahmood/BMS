@@ -1,5 +1,6 @@
 ﻿using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.Entities;
+using BMS.CoreBusiness.Enums;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories;
 
@@ -32,10 +33,12 @@ namespace BMS.UseCases.Services
 
         #region Properties & Object Initialization
         private readonly ITaskRepository _repository;
+        private readonly ICommonService _commonService;
 
-        public TaskService(ITaskRepository repository)
+        public TaskService(ITaskRepository repository, ICommonService commonService)
         {
             _repository = repository;
+            _commonService = commonService;
         }
         #endregion
 
@@ -49,13 +52,14 @@ namespace BMS.UseCases.Services
                 var devTask = new DevTask
                 {
                     Title = viewModel.Title?.Trim(),
-                    Status = viewModel.Status,
+                    Status = DevTaskStatus.Pending,
                     Priority = viewModel.Priority,
+                    ProjectId = viewModel.ProjectId,
                     UXDesignLink = viewModel.UXDesignLink?.Trim(),
                     Group = viewModel.Group?.Trim(),
-                    EntryBy = viewModel.EntryBy?.Trim(),
-                    Responsible1 = viewModel.Responsible1?.Trim(),
-                    Responsible2 = viewModel.Responsible2?.Trim(),
+                    EntryById = _commonService.GetCurrentUserId().ToString(),
+                    Responsible1Id = viewModel.Responsible1Id,
+                    Responsible2Id = viewModel.Responsible2Id,
                     Release = viewModel.Release,
                     EstimatedHours = viewModel.EstimatedHours,
                     ActualHours = viewModel.ActualHours,
@@ -71,6 +75,11 @@ namespace BMS.UseCases.Services
                     TestCaseFunctional = viewModel.TestCaseFunctional?.Trim(),
                     TestFeatureAndScenario = viewModel.TestFeatureAndScenario?.Trim(),
                     WebRequestKey = viewModel.WebRequestKey?.Trim(),
+                    CreatedById = _commonService.GetCurrentUserId(),
+                    CreatedOnUtc = DateTimeOffset.UtcNow,
+                    LastModifiedById = _commonService.GetCurrentUserId(),
+                    LastModifiedOnUtc = DateTimeOffset.UtcNow,
+                    IPAddress = _commonService.RemoteIpAddress,
                 };
 
                 await _repository.SaveTaskAsync(devTask, token);
@@ -101,9 +110,6 @@ namespace BMS.UseCases.Services
                                       Priority = dt.Priority,
                                       UXDesignLink = dt.UXDesignLink,
                                       Group = dt.Group,
-                                      EntryBy = dt.EntryBy,
-                                      Responsible1 = dt.Responsible1,
-                                      Responsible2 = dt.Responsible2,
                                       Release = dt.Release,
                                       EstimatedHours = dt.EstimatedHours,
                                       ActualHours = dt.ActualHours,

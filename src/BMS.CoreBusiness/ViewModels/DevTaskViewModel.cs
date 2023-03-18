@@ -15,14 +15,12 @@ namespace BMS.CoreBusiness.ViewModels
         [Required]
         public Priority Priority { get; set; }
         [Required]
-        public string? Project { get; set; }
+        public Guid ProjectId { get; set; }
         public string? UXDesignLink { get; set; }
         public string? Group { get; set; }
         [Required]
-        public string? EntryBy { get; set; }
-        [Required]
-        public string? Responsible1 { get; set; }
-        public string? Responsible2 { get; set; }
+        public string? Responsible1Id { get; set; }
+        public string? Responsible2Id { get; set; }
         [Required]
         public int Release { get; set; }
         [Required]

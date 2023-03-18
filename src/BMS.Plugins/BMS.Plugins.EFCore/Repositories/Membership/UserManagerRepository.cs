@@ -1,8 +1,12 @@
-﻿using BMS.CoreBusiness.Entities.Membership;
+﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.Entities.Membership;
 using BMS.CoreBusiness.ViewModels.Membership;
+using BMS.Plugins.EFCore.Data;
 using BMS.UseCases.PluginIRepositories.Membership;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace BMS.Plugins.EFCore.Repositories.Membership
 {
@@ -12,11 +16,13 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         #endregion
 
         #region Properties & Object Initialization
+        private readonly BMSDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserManagerRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserManagerRepository(BMSDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -61,6 +67,33 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         #endregion
 
         #region List Loading Function
+        public async Task<IEnumerable<ResponsibleDeveloperDto>> LoadUserAsync(string roleName)
+        {
+            try
+            {
+                var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name.Contains(roleName.Trim()));
+
+                if (role == null) throw new InvalidDataException(nameof(role));
+
+                return await (from u in _context.Users
+                              join ur in _context.UserRoles on u.Id equals ur.UserId into uur
+                              from ur in uur.DefaultIfEmpty()
+                              join r in _context.Roles on ur.RoleId equals r.Id into rur
+                              from r in rur.DefaultIfEmpty()
+                              where r.Id.Contains(role.Id.Trim())
+                              select new ResponsibleDeveloperDto
+                              {
+                                  Id = u.Id,
+                                  Name = u.UserName
+                              }).ToListAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
 
         #region Others Function

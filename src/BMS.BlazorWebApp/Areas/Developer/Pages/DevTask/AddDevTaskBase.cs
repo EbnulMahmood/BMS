@@ -1,6 +1,8 @@
-﻿using BMS.CoreBusiness.Dtos;
+﻿using BMS.BlazorWebApp.Settings;
+using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.Services;
+using BMS.UseCases.Services.Membership;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -13,7 +15,8 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 
         #region Properties & Object Initialization
         protected DevTaskViewModelCreate ViewModelCreate { get; private set; }
-        public IEnumerable<ProjectDto> ProjectDtoList { get; private set; } = new List<ProjectDto>();
+        public IEnumerable<ProjectDto> ProjectDtoList { get; private set; } = Enumerable.Empty<ProjectDto>();
+        public IEnumerable<ResponsibleDeveloperDto> ResponsibleDeveloperDtoList { get; set; } = Enumerable.Empty<ResponsibleDeveloperDto>();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
         private readonly string _tasksUrl = "/Tasks";
@@ -23,13 +26,17 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         [Inject]
         public IProjectService ProjectService { get; private set; }
         [Inject]
+        public IUserManagerService UserManagerService { get; set; }
+        [Inject]
         public NavigationManager NavigationManager { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
             ViewModelCreate = new();
             editContext = new EditContext(ViewModelCreate);
+
             ProjectDtoList = await ProjectService.LoadProjectAsync();
+            ResponsibleDeveloperDtoList = await UserManagerService.LoadUserAsync(RoleConstants.Developer);
 
             editContext.OnFieldChanged += (x, y) =>
             {

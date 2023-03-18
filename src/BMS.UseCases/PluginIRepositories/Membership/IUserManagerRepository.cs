@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.ViewModels.Membership;
+﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.ViewModels.Membership;
 
 namespace BMS.UseCases.PluginIRepositories.Membership
 {
@@ -12,6 +13,7 @@ namespace BMS.UseCases.PluginIRepositories.Membership
         #endregion
 
         #region List Loading Function
+        Task<IEnumerable<ResponsibleDeveloperDto>> LoadUserAsync(string roleId);
         #endregion
 
         #region Others Function
