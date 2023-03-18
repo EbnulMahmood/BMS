@@ -12,8 +12,8 @@
         <div class="row pb-2">
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="priority" class="control-label">Priority</label>
-                <InputSelect @bind-Value="@ViewModelCreate.Priority" id="priority" class="form-select">
-                    <option selected value="0">--Select Priority--</option>
+                <InputSelect @bind-Value="@ViewModelCreate.Priority" id="priority" class="form-select" required>
+                    <option selected value="">--Select Priority--</option>
                     @foreach (var value in Enum.GetValues(typeof(Priority)))
                     {
                         <option value="@value">@value</option>
@@ -23,8 +23,8 @@
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="project" class="control-label">Project</label>
-                <InputSelect @bind-Value="@ViewModelCreate.ProjectId" id="project" class="form-select">
-                    <option>--Select Project--</option>
+                <InputSelect @bind-Value="@ViewModelCreate.ProjectId" id="project" class="form-select" required>
+                    <option selected value="">--Select Project--</option>
                     @foreach (var item in ProjectDtoList)
                     {
                         <option value="@item.Id">@item.Name</option>
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="responsible1" class="control-label">Responsible 1</label>
-                <InputSelect @bind-Value="@ViewModelCreate.Responsible1Id" id="responsible1" class="form-select">
+                <InputSelect @bind-Value="@ViewModelCreate.Responsible1Id" id="responsible1" class="form-select" required>
                     <option value="">--Select Developer--</option>
                     @foreach (var item in ResponsibleDeveloperDtoList)
                     {
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="qAResponsible" class="control-label">QA Responsible</label>
-                <InputSelect @bind-Value="@ViewModelCreate.QAResponsibleId" id="qAResponsible" class="form-select">
+                <InputSelect @bind-Value="@ViewModelCreate.QAResponsibleId" id="qAResponsible" class="form-select" required>
                     <option value="">--Select QA--</option>
                     @foreach (var item in ResponsibleQADtoList)
                     {

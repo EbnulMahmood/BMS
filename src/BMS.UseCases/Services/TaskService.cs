@@ -123,6 +123,11 @@ namespace BMS.UseCases.Services
                     throw new InvalidDataException("Task is too long.");
                 }
 
+                if (viewModel.ProjectId.Equals(Guid.Empty))
+                {
+                    throw new InvalidDataException("The Project field is not valid.");
+                }
+
                 if (viewModel.Priority <= ViewModelConstants.PriorityMinSize)
                 {
                     throw new InvalidDataException("The Priority field is not valid.");

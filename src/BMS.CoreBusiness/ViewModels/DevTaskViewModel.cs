@@ -1,6 +1,5 @@
 ﻿using BMS.CoreBusiness.BusinessRules;
 using BMS.CoreBusiness.Enums;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BMS.CoreBusiness.ViewModels
@@ -8,7 +7,7 @@ namespace BMS.CoreBusiness.ViewModels
     public record DevTaskViewModelCreate
     {
         [Display(Name = "Task")]
-        [Required(ErrorMessage = "The Task field is required.")]
+        [Required(ErrorMessage = "The {0} field is required.")]
         [StringLength(ViewModelConstants.TaskSize, ErrorMessage = "The {0} value cannot exceed {1} characters.")]
         public string? Title { get; set; }
         [Required]
