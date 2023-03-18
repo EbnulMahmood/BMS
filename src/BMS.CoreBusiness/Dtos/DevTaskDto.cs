@@ -11,7 +11,8 @@ namespace BMS.CoreBusiness.Dtos
         public string? Project { get; set; }
         public string? UXDesignLink { get; set; }
         public string? Group { get; set; }
-        public string? EntryBy { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? LastModifiedBy { get; set; }
         public string? Responsible1 { get; set; }
         public string? Responsible2 { get; set; }
         public int Release { get; set; }

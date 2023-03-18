@@ -60,7 +60,6 @@ namespace BMS.UseCases.Services
                     ProjectId = viewModel.ProjectId,
                     UXDesignLink = viewModel.UXDesignLink?.Trim(),
                     Group = viewModel.Group?.Trim(),
-                    EntryById = _commonService.GetCurrentUserId().ToString(),
                     Responsible1Id = viewModel.Responsible1Id,
                     Responsible2Id = viewModel.Responsible2Id,
                     Release = viewModel.Release,
@@ -97,33 +96,7 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                (var taskList, int recordsCount) = await _repository.LoadTaskAsync(token);
-
-                var taskDtoList = from dt in taskList
-                                  select new DevTaskDto
-                                  {
-                                      Title = dt.Title,
-                                      Status = dt.Status,
-                                      Priority = dt.Priority,
-                                      UXDesignLink = dt.UXDesignLink,
-                                      Group = dt.Group,
-                                      Release = dt.Release,
-                                      EstimatedHours = dt.EstimatedHours,
-                                      ActualHours = dt.ActualHours,
-                                      FRSMenuLink = dt.FRSMenuLink,
-                                      UrlOrMenuOrWorkflow = dt.UrlOrMenuOrWorkflow,
-                                      Remarks = dt.Remarks,
-                                      TaskCompletedTime = dt.TaskCompletedTime,
-                                      TaskCreationDate = dt.TaskCreationDate,
-                                      QADoneTime = dt.QADoneTime,
-                                      Review = dt.Review,
-                                      ReviewRemarks = dt.ReviewRemarks,
-                                      TestCaseFunctional = dt.TestCaseFunctional,
-                                      TestFeatureAndScenario = dt.TestFeatureAndScenario,
-                                      WebRequestKey = dt.WebRequestKey
-                                  };
-
-                return (taskDtoList, recordsCount);
+                return await _repository.LoadTaskAsync(token);
             }
             catch (Exception)
             {

@@ -28,12 +28,6 @@ namespace BMS.Plugins.EFCore.Data
                 .HasOne<ApplicationUser>()
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasForeignKey(d => d.EntryById);
-
-            builder.Entity<DevTask>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
-                .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(d => d.Responsible1Id);
 
             builder.Entity<DevTask>()
