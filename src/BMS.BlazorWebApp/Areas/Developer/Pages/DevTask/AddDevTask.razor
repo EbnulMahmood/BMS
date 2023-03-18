@@ -13,7 +13,7 @@
             <div class="form-group col-xl-2 col-md-2 col-sm-12">
                 <label for="priority" class="control-label">Priority</label>
                 <InputSelect @bind-Value="@ViewModelCreate.Priority" id="priority" class="form-select" required>
-                    <option selected value="">--Select Priority--</option>
+                    <option selected value="0">--Select Priority--</option>
                     @foreach (var value in Enum.GetValues(typeof(Priority)))
                     {
                         <option value="@value">@value</option>
