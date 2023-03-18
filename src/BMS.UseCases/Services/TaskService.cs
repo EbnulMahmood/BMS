@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.Dtos;
+﻿using BMS.CoreBusiness.BusinessRules;
+using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.Enums;
 using BMS.CoreBusiness.ViewModels;
@@ -49,6 +50,8 @@ namespace BMS.UseCases.Services
             {
                 if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
 
+                DevTaskViewModelValidation(viewModel);
+
                 var devTask = new DevTask
                 {
                     Title = viewModel.Title?.Trim(),
@@ -61,17 +64,11 @@ namespace BMS.UseCases.Services
                     Responsible1Id = viewModel.Responsible1Id,
                     Responsible2Id = viewModel.Responsible2Id,
                     Release = viewModel.Release,
-                    EstimatedHours = viewModel.EstimatedHours,
-                    ActualHours = viewModel.ActualHours,
                     FRSMenuLink = viewModel.FRSMenuLink?.Trim(),
                     UrlOrMenuOrWorkflow = viewModel.UrlOrMenuOrWorkflow?.Trim(),
                     Remarks = viewModel.Remarks?.Trim(),
-                    TaskCompletedTime = viewModel.TaskCompletedTime,
-                    TaskCreationDate = viewModel.TaskCreationDate,
-                    QAResponsible = viewModel.QAResponsible?.Trim(),
-                    QADoneTime = viewModel.QADoneTime,
-                    Review = viewModel.Review?.Trim(),
-                    ReviewRemarks = viewModel.ReviewRemarks?.Trim(),
+                    TaskCreationDate = DateTimeOffset.UtcNow,
+                    QAResponsibleId = viewModel.QAResponsibleId,
                     TestCaseFunctional = viewModel.TestCaseFunctional?.Trim(),
                     TestFeatureAndScenario = viewModel.TestFeatureAndScenario?.Trim(),
                     WebRequestKey = viewModel.WebRequestKey?.Trim(),
@@ -118,7 +115,6 @@ namespace BMS.UseCases.Services
                                       Remarks = dt.Remarks,
                                       TaskCompletedTime = dt.TaskCompletedTime,
                                       TaskCreationDate = dt.TaskCreationDate,
-                                      QAResponsible = dt.QAResponsible,
                                       QADoneTime = dt.QADoneTime,
                                       Review = dt.Review,
                                       ReviewRemarks = dt.ReviewRemarks,
@@ -141,6 +137,40 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Helper Function
+        public static void DevTaskViewModelValidation(DevTaskViewModelCreate viewModel)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(viewModel.Title))
+                {
+                    throw new InvalidDataException("The Task field is required.");
+                }
+                else if (viewModel.Title.Length > ViewModelConstants.TaskSize)
+                {
+                    throw new InvalidDataException("Task is too long.");
+                }
+
+                if (viewModel.Priority <= ViewModelConstants.PriorityMinSize)
+                {
+                    throw new InvalidDataException("The Priority field is not valid.");
+                }
+
+                if (viewModel.Release < ViewModelConstants.ReleaseMinSize)
+                {
+                    throw new InvalidDataException($"Release can't be less than {ViewModelConstants.ReleaseMinSize}.");
+                }
+
+                if (string.IsNullOrWhiteSpace(viewModel.Responsible1Id))
+                {
+                    throw new InvalidDataException("The Responsible 1 field is required.");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
     }
 }

@@ -16,10 +16,11 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         #region Properties & Object Initialization
         protected DevTaskViewModelCreate ViewModelCreate { get; private set; }
         public IEnumerable<ProjectDto> ProjectDtoList { get; private set; } = Enumerable.Empty<ProjectDto>();
-        public IEnumerable<ResponsibleDeveloperDto> ResponsibleDeveloperDtoList { get; set; } = Enumerable.Empty<ResponsibleDeveloperDto>();
+        public IEnumerable<ResponsibleUserDto> ResponsibleDeveloperDtoList { get; set; } = Enumerable.Empty<ResponsibleUserDto>();
+        public IEnumerable<ResponsibleUserDto> ResponsibleQADtoList { get; set; } = Enumerable.Empty<ResponsibleUserDto>();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
-        private readonly string _tasksUrl = "/Tasks";
+        private readonly string _tasksUrl = "/Developer/Tasks";
 
         [Inject]
         public ITaskService TaskService { get; private set; }
@@ -37,6 +38,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 
             ProjectDtoList = await ProjectService.LoadProjectAsync();
             ResponsibleDeveloperDtoList = await UserManagerService.LoadUserAsync(RoleConstants.Developer);
+            ResponsibleQADtoList = await UserManagerService.LoadUserAsync(RoleConstants.QA);
 
             editContext.OnFieldChanged += (x, y) =>
             {

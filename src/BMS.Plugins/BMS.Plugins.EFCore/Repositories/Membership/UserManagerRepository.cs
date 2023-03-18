@@ -67,7 +67,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<ResponsibleDeveloperDto>> LoadUserAsync(string roleName)
+        public async Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleName)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                               join r in _context.Roles on ur.RoleId equals r.Id into rur
                               from r in rur.DefaultIfEmpty()
                               where r.Id.Contains(role.Id.Trim())
-                              select new ResponsibleDeveloperDto
+                              select new ResponsibleUserDto
                               {
                                   Id = u.Id,
                                   Name = u.UserName

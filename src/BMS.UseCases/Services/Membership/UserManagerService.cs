@@ -14,7 +14,7 @@ namespace BMS.UseCases.Services.Membership
         #endregion
 
         #region List Loading Function
-        Task<IEnumerable<ResponsibleDeveloperDto>> LoadUserAsync(string roleId);
+        Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId);
         #endregion
 
         #region Others Function
@@ -57,7 +57,7 @@ namespace BMS.UseCases.Services.Membership
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<ResponsibleDeveloperDto>> LoadUserAsync(string roleId)
+        public async Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId)
         {
             try
             {

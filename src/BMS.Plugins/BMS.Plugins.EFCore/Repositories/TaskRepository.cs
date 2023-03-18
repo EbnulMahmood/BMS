@@ -68,7 +68,6 @@ namespace BMS.Plugins.EFCore.Repositories
                                           Remarks = dt.Remarks,
                                           TaskCompletedTime = dt.TaskCompletedTime,
                                           TaskCreationDate = dt.TaskCreationDate,
-                                          QAResponsible = dt.QAResponsible,
                                           QADoneTime = dt.QADoneTime,
                                           Review = dt.Review,
                                           ReviewRemarks = dt.ReviewRemarks,

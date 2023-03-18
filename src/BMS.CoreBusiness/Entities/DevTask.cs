@@ -23,7 +23,7 @@ namespace BMS.CoreBusiness.Entities
         public string? Remarks { get; init; }
         public DateTimeOffset TaskCompletedTime { get; init; }
         public DateTimeOffset TaskCreationDate { get; init; }
-        public string? QAResponsible { get; init; }
+        public string? QAResponsibleId { get; init; }
         public DateTimeOffset QADoneTime { get; init; }
         public string? Review { get; init; }
         public string? ReviewRemarks { get; init; }

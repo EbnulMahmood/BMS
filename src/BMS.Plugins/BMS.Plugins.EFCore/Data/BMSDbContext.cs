@@ -42,6 +42,12 @@ namespace BMS.Plugins.EFCore.Data
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasForeignKey(d => d.Responsible2Id);
 
+            builder.Entity<DevTask>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasForeignKey(d => d.QAResponsibleId);
+
             builder.Entity<DevTask>().Property(p => p.EstimatedHours).HasPrecision(8, 2);
             builder.Entity<DevTask>().Property(p => p.ActualHours).HasPrecision(8, 2);
         }
