@@ -4,6 +4,7 @@ using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.Enums;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.UseCases.Services
 {
@@ -30,16 +31,18 @@ namespace BMS.UseCases.Services
     internal sealed class TaskService : ITaskService
     {
         #region Logger
+        private readonly ILogger<TaskService> _logger;
         #endregion
 
         #region Properties & Object Initialization
         private readonly ITaskRepository _repository;
         private readonly ICommonService _commonService;
 
-        public TaskService(ITaskRepository repository, ICommonService commonService)
+        public TaskService(ITaskRepository repository, ICommonService commonService, ILogger<TaskService> logger)
         {
             _repository = repository;
             _commonService = commonService;
+            _logger = logger;
         }
         #endregion
 
@@ -94,6 +97,7 @@ namespace BMS.UseCases.Services
         #region List Loading Function
         public async Task<(IEnumerable<DevTaskDto>, int)> LoadTaskAsync(CancellationToken token = default)
         {
+            _logger.LogInformation("Loading Task started");
             try
             {
                 return await _repository.LoadTaskAsync(token);

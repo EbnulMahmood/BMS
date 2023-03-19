@@ -52,7 +52,7 @@ namespace BMS.UseCases.Services
                 // test case
                 if (string.Equals(remoteIpAddress.ToString().Trim(), "::1", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    return "192.168.2.220";
+                    return "localhost";
                 }
                 // end test case
 

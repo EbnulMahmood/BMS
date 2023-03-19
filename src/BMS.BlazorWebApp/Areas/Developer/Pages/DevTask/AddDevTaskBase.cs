@@ -12,7 +12,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
     {
         #region Logger
         [Inject]
-        protected ILogger<AddDevTaskBase> Logger { get; private set; }
+        protected Microsoft.Extensions.Logging.ILogger<AddDevTaskBase> Logger { get; private set; }
         #endregion
 
         #region Properties & Object Initialization

@@ -8,6 +8,8 @@
 
         public static readonly string errorPage = "/Error";
         public static readonly string hostPage = "/_Host";
+
+        public static readonly string appsettingsFileName = "appsettings.json";
     }
 
     public static class PolicyConstants
