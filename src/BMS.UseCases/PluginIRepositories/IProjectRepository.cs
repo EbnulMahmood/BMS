@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.Entities;
+﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.Entities;
 
 namespace BMS.UseCases.PluginIRepositories
 {
@@ -12,7 +13,7 @@ namespace BMS.UseCases.PluginIRepositories
         #endregion
 
         #region List Loading Function
-        Task<IEnumerable<Project>> LoadProjectAsync(CancellationToken token = default);
+        Task<IEnumerable<ProjectDto>> LoadProjectAsync(CancellationToken token = default);
         #endregion
 
         #region Others Function

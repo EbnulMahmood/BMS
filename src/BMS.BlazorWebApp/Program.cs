@@ -17,7 +17,7 @@ GlobalAppSettings.MigrationsAssemblyName = Assembly.GetExecutingAssembly().FullN
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<TokenProvider>();
 
-builder.Services.AddDbContext<BMSDbContext>(options => options.UseSqlServer(GlobalAppSettings.BMSMSSql, b => b.MigrationsAssembly(GlobalAppSettings.MigrationsAssemblyName)));
+builder.Services.AddDbContextFactory<BMSDbContext>(options => options.UseSqlServer(GlobalAppSettings.BMSMSSql, b => b.MigrationsAssembly(GlobalAppSettings.MigrationsAssemblyName)));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()

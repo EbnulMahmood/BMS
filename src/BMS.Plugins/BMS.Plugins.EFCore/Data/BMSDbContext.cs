@@ -2,6 +2,7 @@
 using BMS.CoreBusiness.Entities.Membership;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BMS.Plugins.EFCore.Data
 {
@@ -16,8 +17,6 @@ namespace BMS.Plugins.EFCore.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-
             builder.Entity<DevTask>()
                 .HasOne<Project>()
                 .WithMany()
@@ -44,6 +43,20 @@ namespace BMS.Plugins.EFCore.Data
 
             builder.Entity<DevTask>().Property(p => p.EstimatedHours).HasPrecision(8, 2);
             builder.Entity<DevTask>().Property(p => p.ActualHours).HasPrecision(8, 2);
+
+            base.OnModelCreating(builder);
+        }
+
+        public override void Dispose()
+        {
+            Debug.WriteLine($"{ContextId} context disposed.");
+            base.Dispose();
+        }
+
+        public override ValueTask DisposeAsync()
+        {
+            Debug.WriteLine($"{ContextId} context disposed async.");
+            return base.DisposeAsync();
         }
     }
 }

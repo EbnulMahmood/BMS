@@ -14,7 +14,7 @@ namespace BMS.UseCases.Services.Membership
         #endregion
 
         #region List Loading Function
-        Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId);
+        Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId, CancellationToken token = default);
         #endregion
 
         #region Others Function
@@ -57,11 +57,11 @@ namespace BMS.UseCases.Services.Membership
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId)
+        public async Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId, CancellationToken token = default)
         {
             try
             {
-                return await _userManagerRepository.LoadUserAsync(roleId);
+                return await _userManagerRepository.LoadUserAsync(roleId, token);
             }
             catch (Exception)
             {

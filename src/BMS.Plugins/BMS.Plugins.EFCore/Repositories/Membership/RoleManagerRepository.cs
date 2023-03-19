@@ -1,6 +1,7 @@
 ﻿using BMS.CoreBusiness.ViewModels.Membership;
 using BMS.UseCases.PluginIRepositories.Membership;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BMS.Plugins.EFCore.Repositories.Membership
 {
@@ -11,6 +12,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
 
         #region Properties & Object Initialization
         private readonly RoleManager<IdentityRole> _roleManager;
+        private bool _busy;
 
         public RoleManagerRepository(RoleManager<IdentityRole> roleManager)
         {
@@ -27,8 +29,13 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         #region List Loading Function
         public IEnumerable<RoleViewModel> LoadRole()
         {
+            if (_busy) { return Enumerable.Empty<RoleViewModel>(); }
+
+            _busy = true;
             try
             {
+                if (_roleManager is null || _roleManager.Roles is null) { return Enumerable.Empty<RoleViewModel>(); }
+
                 var roleList = _roleManager.Roles.ToList();
 
                 return from role in roleList
@@ -38,10 +45,20 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                            Id = role.Id,
                        };
             }
-            catch (Exception)
+            catch (DbUpdateConcurrencyException)
             {
 
+                _busy = false;
                 throw;
+            }
+            catch (Exception)
+            {
+                _busy = false;
+                throw;
+            }
+            finally
+            {
+                _busy = false;
             }
         }
         #endregion

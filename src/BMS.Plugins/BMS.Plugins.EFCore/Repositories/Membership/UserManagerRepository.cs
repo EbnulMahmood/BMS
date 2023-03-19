@@ -6,7 +6,6 @@ using BMS.UseCases.PluginIRepositories.Membership;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Xml.Linq;
 
 namespace BMS.Plugins.EFCore.Repositories.Membership
 {
@@ -16,21 +15,25 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         #endregion
 
         #region Properties & Object Initialization
-        private readonly BMSDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IDbContextFactory<BMSDbContext> _contextFactory;
+        private bool _busy;
 
-        public UserManagerRepository(BMSDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserManagerRepository(IDbContextFactory<BMSDbContext> contextFactory, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _contextFactory = contextFactory;
         }
         #endregion
 
         #region Operational Function
         public async Task SaveUserAsync(UserViewModel userViewModel)
         {
+            if (_busy) { return; }
+
+            _busy = true;
             try
             {
                 string message = "Something Went Wrong!";
@@ -42,6 +45,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                     EmailConfirmed = true
                 };
 
+                if (_userManager is null || _roleManager is null || _roleManager.Roles is null) { return; }
                 var result = await _userManager.CreateAsync(applicationUser, "@E0b0nul");
 
                 if (result.Succeeded)
@@ -55,10 +59,20 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                     if (claimAddedResult.Succeeded) { message = "New User, Role and Claim Added!"; }
                 }
             }
-            catch (Exception)
+            catch (DbUpdateConcurrencyException)
             {
 
+                _busy = false;
                 throw;
+            }
+            catch (Exception)
+            {
+                _busy = false;
+                throw;
+            }
+            finally
+            {
+                _busy = false;
             }
         }
         #endregion
@@ -67,31 +81,56 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleName)
+        public async Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleName, CancellationToken token = default)
         {
+            if (_busy) { return Enumerable.Empty<ResponsibleUserDto>(); }
+
+            _busy = true;
             try
             {
-                var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name.Contains(roleName.Trim()));
+                if (_roleManager is null || _roleManager.Roles is null) { return Enumerable.Empty<ResponsibleUserDto>(); }
 
+                var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name.Contains(roleName.Trim()), token);
                 if (role == null) throw new InvalidDataException(nameof(role));
 
-                return await (from u in _context.Users
-                              join ur in _context.UserRoles on u.Id equals ur.UserId into uur
+                using var context = await _contextFactory.CreateDbContextAsync(token);
+                if (context is null || context.Users is null || context.UserRoles is null || context.Roles is null)
+                {
+                    return Enumerable.Empty<ResponsibleUserDto>();
+                }
+
+                return await (from u in context.Users
+                              join ur in context.UserRoles on u.Id equals ur.UserId into uur
                               from ur in uur.DefaultIfEmpty()
-                              join r in _context.Roles on ur.RoleId equals r.Id into rur
+                              join r in context.Roles on ur.RoleId equals r.Id into rur
                               from r in rur.DefaultIfEmpty()
                               where r.Id.Contains(role.Id.Trim())
                               select new ResponsibleUserDto
                               {
                                   Id = u.Id,
                                   Name = u.UserName
-                              }).ToListAsync();
+                              }).ToListAsync(token);
 
+            }
+            catch (OperationCanceledException)
+            {
+                _busy = false;
+                throw;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                _busy = false;
+                throw;
             }
             catch (Exception)
             {
-
+                _busy = false;
                 throw;
+            }
+            finally
+            {
+                _busy = false;
             }
         }
         #endregion

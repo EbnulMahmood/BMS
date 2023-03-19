@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.Entities;
+﻿using BMS.CoreBusiness.Dtos;
+using BMS.CoreBusiness.Entities;
 using BMS.Plugins.EFCore.Data;
 using BMS.UseCases.PluginIRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -8,26 +9,48 @@ namespace BMS.Plugins.EFCore.Repositories
     internal sealed class ProjectRepository : IProjectRepository
     {
         #region Properties & Object Initialization
-        private readonly BMSDbContext _context;
+        private readonly IDbContextFactory<BMSDbContext> _contextFactory;
+        private bool _busy;
 
-        public ProjectRepository(BMSDbContext context)
+        public ProjectRepository(IDbContextFactory<BMSDbContext> contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
         #endregion
 
         #region Operational Function
         public async Task SaveProjectAsync(Project project, CancellationToken token = default)
         {
+            if (_busy) { return; }
+
+            _busy = true;
             try
             {
-                await _context.Projects.AddAsync(project, token);
-                await _context.SaveChangesAsync(token);
+                using var context = await _contextFactory.CreateDbContextAsync(token);
+                if (context is null || context.Projects is null) { return; }
+
+                await context.Projects.AddAsync(project, token);
+                await context.SaveChangesAsync(token);
+            }
+            catch (OperationCanceledException)
+            {
+                _busy = false;
+                throw;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                _busy = false;
+                throw;
             }
             catch (Exception)
             {
-
+                _busy = false;
                 throw;
+            }
+            finally
+            {
+                _busy = false;
             }
         }
         #endregion
@@ -36,23 +59,44 @@ namespace BMS.Plugins.EFCore.Repositories
         #endregion
 
         #region List Loading Function
-        public async Task<IEnumerable<Project>> LoadProjectAsync(CancellationToken token = default)
+        public async Task<IEnumerable<ProjectDto>> LoadProjectAsync(CancellationToken token = default)
         {
+            if (_busy) { return Enumerable.Empty<ProjectDto>(); }
+
+            _busy = true;
             try
             {
-                return await _context.Projects
+                using var context = await _contextFactory.CreateDbContextAsync(token);
+                if (context is null || context.Projects is null) { return Enumerable.Empty<ProjectDto>(); }
+
+                return await context.Projects
                         .Where(x => x.IsDeleted == false)
-                        .Select(x => new Project
+                        .Select(x => new ProjectDto
                         {
                             Id = x.Id,
                             Name = x.Name,
                         })
                         .ToListAsync(token);
             }
-            catch (Exception)
+            catch (OperationCanceledException)
+            {
+                _busy = false;
+                throw;
+            }
+            catch (DbUpdateConcurrencyException)
             {
 
+                _busy = false;
                 throw;
+            }
+            catch (Exception)
+            {
+                _busy = false;
+                throw;
+            }
+            finally
+            {
+                _busy = false;
             }
         }
         #endregion

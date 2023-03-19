@@ -77,14 +77,7 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                var projectList = await _repository.LoadProjectAsync(token);
-
-                return from project in projectList
-                       select new ProjectDto
-                       {
-                           Id = project.Id,
-                           Name = project.Name,
-                       };
+                return await _repository.LoadProjectAsync(token);
             }
             catch (Exception)
             {

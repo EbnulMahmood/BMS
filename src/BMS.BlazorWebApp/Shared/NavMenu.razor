@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BMS.BlazorWebApp</a>
+        <a class="navbar-brand" href="">Development Tracker</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -17,7 +17,7 @@
         <AuthorizeView>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Developer/Tasks">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Manage Task
+                    <span class="oi oi-list" aria-hidden="true"></span> Manage Task
                 </NavLink>
             </div>
             <div class="nav-item px-3">
@@ -32,21 +32,21 @@
             </div>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Administrator/Manage">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Manage Admin
+                    <span class="oi oi-list" aria-hidden="true"></span> Manage Admin
                 </NavLink>
             </div>
         </AuthorizeView>
         <AuthorizeView Roles="Admin">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Administrator/Role">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Manage Role
+                    <span class="oi oi-list" aria-hidden="true"></span> Manage Role
                 </NavLink>
             </div>
         </AuthorizeView>
         <AuthorizeView Policy="AdminOnly">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Administrator/Policy">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Manage Policy
+                    <span class="oi oi-list" aria-hidden="true"></span> Manage Policy
                 </NavLink>
             </div>
         </AuthorizeView>

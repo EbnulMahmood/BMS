@@ -13,7 +13,7 @@ namespace BMS.UseCases.PluginIRepositories.Membership
         #endregion
 
         #region List Loading Function
-        Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId);
+        Task<IEnumerable<ResponsibleUserDto>> LoadUserAsync(string roleId, CancellationToken token = default);
         #endregion
 
         #region Others Function
