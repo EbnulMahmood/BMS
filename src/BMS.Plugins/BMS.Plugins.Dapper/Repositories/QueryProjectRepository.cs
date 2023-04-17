@@ -27,7 +27,7 @@ namespace BMS.Plugins.Dapper.Repositories
             _busy = true;
             try
             {
-                string query = $@"/*ProjectRepository=>LoadProject*/
+                string query = $@"/*QueryProjectRepository=>LoadProjectAsync*/
 SELECT 
 Id
 ,Name
@@ -39,6 +39,34 @@ Id
 FROM Projects
 ";
                 var projectDtoList = await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { });
+
+                return projectDtoList;
+            }
+            catch (Exception)
+            {
+                _busy = false;
+                throw;
+            }
+            finally
+            {
+                _busy = false;
+            }
+        }
+
+        public async Task<IEnumerable<ProjectDropdownDto>> LoadProjectDropdownAsync(CancellationToken token = default)
+        {
+            if (_busy) { return Enumerable.Empty<ProjectDropdownDto>(); }
+
+            _busy = true;
+            try
+            {
+                string query = $@"/*QueryProjectRepository=>LoadProjectDropdownAsync*/
+SELECT 
+Id
+,Name
+FROM Projects
+";
+                var projectDtoList = await _context.LoadDataAsync<ProjectDropdownDto, dynamic>(query, new { });
 
                 return projectDtoList;
             }

@@ -25,7 +25,7 @@
                 <label for="project" class="control-label">Project</label>
                 <InputSelect @bind-Value="@ViewModelCreate.ProjectId" id="project" class="form-select" required>
                     <option selected value="">--Select Project--</option>
-                    @foreach (var item in ProjectDtoList)
+                    @foreach (var item in ProjectDropdownDtoList)
                     {
                         <option value="@item.Id">@item.Name</option>
                     }

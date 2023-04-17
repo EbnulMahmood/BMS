@@ -1,6 +1,4 @@
-﻿using BMS.CoreBusiness.Enums;
-
-namespace BMS.CoreBusiness.Dtos
+﻿namespace BMS.CoreBusiness.Dtos
 {
     public sealed record ProjectDto
     {
@@ -10,6 +8,8 @@ namespace BMS.CoreBusiness.Dtos
         public DateTimeOffset CreatedOnUtc { get; init; }
         public Guid LastModifiedById { get; init; }
         public DateTimeOffset? LastModifiedOnUtc { get; init; }
-        public string IPAddress { get; init; }
+        public string? IPAddress { get; init; }
     }
+
+    public readonly record struct ProjectDropdownDto(Guid Id, string Name);
 }

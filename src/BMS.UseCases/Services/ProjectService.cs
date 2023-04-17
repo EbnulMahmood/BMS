@@ -17,6 +17,7 @@ namespace BMS.UseCases.Services
 
         #region List Loading Function
         Task<IEnumerable<ProjectDto>> LoadProjectAsync(CancellationToken token = default);
+        Task<IEnumerable<ProjectDropdownDto>> LoadProjectDropdownAsync(CancellationToken token = default);
         #endregion
 
         #region Others Function
@@ -82,6 +83,19 @@ namespace BMS.UseCases.Services
             try
             {
                 return await _queryProjectRepository.LoadProjectAsync(token);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<ProjectDropdownDto>> LoadProjectDropdownAsync(CancellationToken token = default)
+        {
+            try
+            {
+                return await _queryProjectRepository.LoadProjectDropdownAsync(token);
             }
             catch (Exception)
             {

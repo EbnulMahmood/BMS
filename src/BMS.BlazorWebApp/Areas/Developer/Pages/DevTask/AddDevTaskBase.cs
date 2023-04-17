@@ -17,7 +17,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 
         #region Properties & Object Initialization
         protected DevTaskViewModelCreate ViewModelCreate { get; private set; }
-        public IEnumerable<ProjectDto> ProjectDtoList { get; private set; } = Enumerable.Empty<ProjectDto>();
+        public IEnumerable<ProjectDropdownDto> ProjectDropdownDtoList { get; private set; } = Enumerable.Empty<ProjectDropdownDto>();
         public IEnumerable<ResponsibleUserDto> ResponsibleDeveloperDtoList { get; set; } = Enumerable.Empty<ResponsibleUserDto>();
         public IEnumerable<ResponsibleUserDto> ResponsibleQADtoList { get; set; } = Enumerable.Empty<ResponsibleUserDto>();
         protected EditContext editContext;
@@ -41,7 +41,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
                 ViewModelCreate = new();
                 editContext = new EditContext(ViewModelCreate);
 
-                ProjectDtoList = await ProjectService.LoadProjectAsync();
+                ProjectDropdownDtoList = await ProjectService.LoadProjectDropdownAsync();
                 ResponsibleDeveloperDtoList = await UserManagerService.LoadUserAsync(RoleConstants.Developer);
                 ResponsibleQADtoList = await UserManagerService.LoadUserAsync(RoleConstants.QA);
 

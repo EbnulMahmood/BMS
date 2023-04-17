@@ -29,14 +29,14 @@ namespace BMS.Plugins.Dapper.Repositories
             {
                 IEnumerable<DevTaskDto> taskList = new List<DevTaskDto>();
 
-                string countQuery = $@"
+                string countQuery = $@"/*QueryTaskRepository=>LoadTaskAsync*/
 SELECT COUNT(*) FROM Tasks
 ";
                 int recordsCount = await _context.GetFirstOrDefaultDataAsync<int, dynamic>(countQuery, new { });
 
                 if (recordsCount > 0)
                 {
-                    string query = $@"
+                    string query = $@"/*QueryTaskRepository=>LoadTaskAsync*/
 SELECT
 t.Title
 ,t.Status
