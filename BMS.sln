@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Plugins.EFCore", "src\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.BlazorWebApp", "src\BMS.BlazorWebApp\BMS.BlazorWebApp.csproj", "{8D08B981-A186-44C6-B20B-51DD6A0B246C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Plugins.Dapper", "src\BMS.Plugins\BMS.Plugins.Dapper\BMS.Plugins.Dapper.csproj", "{6A058E5A-2A95-4D29-AAE4-A315D2442560}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{8D08B981-A186-44C6-B20B-51DD6A0B246C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D08B981-A186-44C6-B20B-51DD6A0B246C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D08B981-A186-44C6-B20B-51DD6A0B246C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A058E5A-2A95-4D29-AAE4-A315D2442560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A058E5A-2A95-4D29-AAE4-A315D2442560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A058E5A-2A95-4D29-AAE4-A315D2442560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A058E5A-2A95-4D29-AAE4-A315D2442560}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 		{721E318A-3CB4-4942-BEE2-EF7A5A9F8A1A} = {F746071D-DCB4-4998-95BC-A7ECF024383D}
 		{7A7FE22C-99DE-4EA4-96FD-BC066C86D3C7} = {721E318A-3CB4-4942-BEE2-EF7A5A9F8A1A}
 		{8D08B981-A186-44C6-B20B-51DD6A0B246C} = {F746071D-DCB4-4998-95BC-A7ECF024383D}
+		{6A058E5A-2A95-4D29-AAE4-A315D2442560} = {721E318A-3CB4-4942-BEE2-EF7A5A9F8A1A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70230616-33DF-40AF-AC75-68768A995B01}

@@ -4,6 +4,8 @@ using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.Enums;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories;
+using BMS.UseCases.PluginIRepositories.Execute;
+using BMS.UseCases.PluginIRepositories.Query;
 using Microsoft.Extensions.Logging;
 
 namespace BMS.UseCases.Services
@@ -35,12 +37,17 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Properties & Object Initialization
-        private readonly ITaskRepository _repository;
+        private readonly IExecuteTaskRepository _executeTaskRepository;
+        private readonly IQueryTaskRepository _queryTaskRepository;
         private readonly ICommonService _commonService;
 
-        public TaskService(ITaskRepository repository, ICommonService commonService, ILogger<TaskService> logger)
+        public TaskService(IExecuteTaskRepository executeTaskRepository
+            , IQueryTaskRepository queryTaskRepository
+            , ICommonService commonService
+            , ILogger<TaskService> logger)
         {
-            _repository = repository;
+            _executeTaskRepository = executeTaskRepository;
+            _queryTaskRepository = queryTaskRepository;
             _commonService = commonService;
             _logger = logger;
         }
@@ -81,7 +88,7 @@ namespace BMS.UseCases.Services
                     IPAddress = _commonService.RemoteIpAddress,
                 };
 
-                await _repository.SaveTaskAsync(devTask, token);
+                await _executeTaskRepository.SaveTaskAsync(devTask, token);
             }
             catch (Exception)
             {
@@ -100,7 +107,7 @@ namespace BMS.UseCases.Services
             _logger.LogInformation("Loading Task started");
             try
             {
-                return await _repository.LoadTaskAsync(token);
+                return await _queryTaskRepository.LoadTaskAsync(token);
             }
             catch (Exception)
             {

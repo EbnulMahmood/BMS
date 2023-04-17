@@ -1,5 +1,6 @@
 using BMS.Plugins.EFCore.Data;
 using BMS.Plugins.EFCore.Extensions;
+using BMS.Plugins.Dapper.Extensions;
 using BMS.UseCases.Extensions;
 using Microsoft.EntityFrameworkCore;
 using BMS.BlazorWebApp.Securities;
@@ -36,6 +37,7 @@ try
         .AddEntityFrameworkStores<BMSDbContext>();
 
     builder.Services.AddBMSRepositories();
+    builder.Services.AddDapperRepositories();
     builder.Services.AddBMSServices();
 
     builder.Services.AddHttpContextAccessor();

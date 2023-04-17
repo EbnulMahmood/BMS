@@ -1,7 +1,8 @@
 ﻿using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.ViewModels;
-using BMS.UseCases.PluginIRepositories;
+using BMS.UseCases.PluginIRepositories.Execute;
+using BMS.UseCases.PluginIRepositories.Query;
 
 namespace BMS.UseCases.Services
 {
@@ -31,13 +32,16 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Properties & Object Initialization
-        private readonly IProjectRepository _repository;
+        private readonly IExecuteProjectRepository _executeProjectRepository;
+        private readonly IQueryProjectRepository _queryProjectRepository;
         private readonly ICommonService _commonService;
 
-        public ProjectService(IProjectRepository repository
+        public ProjectService(IExecuteProjectRepository executeProjectRepository
+            , IQueryProjectRepository queryProjectRepository
             , ICommonService commonService)
         {
-            _repository = repository;
+            _executeProjectRepository = executeProjectRepository;
+            _queryProjectRepository = queryProjectRepository;
             _commonService = commonService;
         }
         #endregion
@@ -59,7 +63,7 @@ namespace BMS.UseCases.Services
                     IPAddress = _commonService.RemoteIpAddress,
                 };
 
-                await _repository.SaveProjectAsync(project, token);
+                await _executeProjectRepository.SaveProjectAsync(project, token);
             }
             catch (Exception)
             {
@@ -77,7 +81,7 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                return await _repository.LoadProjectAsync(token);
+                return await _queryProjectRepository.LoadProjectAsync(token);
             }
             catch (Exception)
             {
