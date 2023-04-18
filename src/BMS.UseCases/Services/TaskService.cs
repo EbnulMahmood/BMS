@@ -3,7 +3,6 @@ using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.Enums;
 using BMS.CoreBusiness.ViewModels;
-using BMS.UseCases.PluginIRepositories;
 using BMS.UseCases.PluginIRepositories.Execute;
 using BMS.UseCases.PluginIRepositories.Query;
 using Microsoft.Extensions.Logging;
@@ -90,9 +89,17 @@ namespace BMS.UseCases.Services
 
                 await _executeTaskRepository.SaveTaskAsync(devTask, token);
             }
-            catch (Exception)
+            catch (ArgumentNullException)
             {
-
+                throw;
+            }
+            catch (InvalidDataException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(SaveTaskAsync));
                 throw;
             }
         }
@@ -104,14 +111,13 @@ namespace BMS.UseCases.Services
         #region List Loading Function
         public async Task<(IEnumerable<DevTaskDto>, int)> LoadTaskAsync(CancellationToken token = default)
         {
-            _logger.LogInformation("Loading Task started");
             try
             {
                 return await _queryTaskRepository.LoadTaskAsync(token);
             }
             catch (Exception)
             {
-
+                _logger.LogError("Something went wrong on {Method}", nameof(LoadTaskAsync));
                 throw;
             }
         }
@@ -154,9 +160,12 @@ namespace BMS.UseCases.Services
                     throw new InvalidDataException("The Responsible 1 field is required.");
                 }
             }
+            catch (InvalidDataException)
+            {
+                throw;
+            }
             catch (Exception)
             {
-
                 throw;
             }
         }

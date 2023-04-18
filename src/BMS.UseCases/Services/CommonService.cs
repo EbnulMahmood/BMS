@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Net.Sockets;
 using System.Security.Claims;
 
 namespace BMS.UseCases.Services
@@ -26,13 +28,15 @@ namespace BMS.UseCases.Services
     internal sealed class CommonService : ICommonService
     {
         #region Logger
+        private readonly ILogger<CommonService> _logger;
         #endregion
 
         #region Properties & Object Initialization
         private readonly IHttpContextAccessor _httpContext;
 
-        public CommonService(IHttpContextAccessor httpContext)
+        public CommonService(IHttpContextAccessor httpContext, ILogger<CommonService> logger)
         {
+            _logger = logger;
             _httpContext = httpContext;
         }
         #endregion
@@ -41,22 +45,52 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Single Instances Loading Function
-        public Guid GetCurrentUserId() => Guid.Parse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        public Guid GetCurrentUserId()
+        {
+            try
+            {
+                bool success = Guid.TryParse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId);
+                if (success)
+                {
+                    return userId;
+                }
+                return Guid.Empty;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong in {Method}", nameof(GetCurrentUserId));
+                throw;
+            }
+        }
 
         public string RemoteIpAddress
         {
             get
             {
-                var remoteIpAddress = _httpContext.HttpContext.Connection.RemoteIpAddress;
-
-                // test case
-                if (string.Equals(remoteIpAddress.ToString().Trim(), "::1", StringComparison.CurrentCultureIgnoreCase))
+                try
                 {
-                    return "localhost";
-                }
-                // end test case
+                    var remoteIpAddress = _httpContext.HttpContext.Connection.RemoteIpAddress;
 
-                return remoteIpAddress.ToString();
+                    if (string.Equals(remoteIpAddress.ToString().Trim(), "::1", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return "localhost";
+                    }
+
+                    return remoteIpAddress.ToString();
+                }
+                catch (ArgumentException)
+                {
+                    throw;
+                }
+                catch (SocketException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Something went wrong in {Property}", nameof(RemoteIpAddress));
+                    throw;
+                }
             }
         }
         #endregion

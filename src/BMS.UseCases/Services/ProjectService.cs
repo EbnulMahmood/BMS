@@ -3,6 +3,7 @@ using BMS.CoreBusiness.Entities;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.PluginIRepositories.Execute;
 using BMS.UseCases.PluginIRepositories.Query;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.UseCases.Services
 {
@@ -30,6 +31,7 @@ namespace BMS.UseCases.Services
     internal sealed class ProjectService : IProjectService
     {
         #region Logger
+        private readonly ILogger<ProjectService> _logger;
         #endregion
 
         #region Properties & Object Initialization
@@ -39,8 +41,10 @@ namespace BMS.UseCases.Services
 
         public ProjectService(IExecuteProjectRepository executeProjectRepository
             , IQueryProjectRepository queryProjectRepository
-            , ICommonService commonService)
+            , ICommonService commonService
+            , ILogger<ProjectService> logger)
         {
+            _logger = logger;
             _executeProjectRepository = executeProjectRepository;
             _queryProjectRepository = queryProjectRepository;
             _commonService = commonService;
@@ -66,9 +70,13 @@ namespace BMS.UseCases.Services
 
                 await _executeProjectRepository.SaveProjectAsync(project, token);
             }
-            catch (Exception)
+            catch (ArgumentNullException)
             {
-
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(SaveProjectAsync));
                 throw;
             }
         }
@@ -86,7 +94,7 @@ namespace BMS.UseCases.Services
             }
             catch (Exception)
             {
-
+                _logger.LogError("Something went wrong on {Method}", nameof(LoadProjectAsync));
                 throw;
             }
         }
@@ -99,7 +107,7 @@ namespace BMS.UseCases.Services
             }
             catch (Exception)
             {
-
+                _logger.LogError("Something went wrong on {Method}", nameof(LoadProjectDropdownAsync));
                 throw;
             }
         }
