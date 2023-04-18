@@ -1,5 +1,6 @@
 ﻿using BMS.CoreBusiness.ViewModels.Membership;
 using BMS.UseCases.PluginIRepositories.Membership;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.UseCases.Services.Membership
 {
@@ -25,13 +26,15 @@ namespace BMS.UseCases.Services.Membership
     internal sealed class RoleManagerService : IRoleManagerService
     {
         #region Logger
+        private readonly ILogger<RoleManagerService> _logger;
         #endregion
 
         #region Properties & Object Initialization
         private readonly IRoleManagerRepository _roleManagerRepository;
 
-        public RoleManagerService(IRoleManagerRepository roleManagerRepository)
+        public RoleManagerService(IRoleManagerRepository roleManagerRepository,  ILogger<RoleManagerService> logger)
         {
+            _logger = logger;
             _roleManagerRepository = roleManagerRepository;
         }
         #endregion
@@ -49,9 +52,9 @@ namespace BMS.UseCases.Services.Membership
             {
                 return _roleManagerRepository.LoadRole();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadRole));
                 throw;
             }
         }

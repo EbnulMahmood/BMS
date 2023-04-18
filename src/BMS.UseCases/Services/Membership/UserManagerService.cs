@@ -1,6 +1,7 @@
 ﻿using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.ViewModels.Membership;
 using BMS.UseCases.PluginIRepositories.Membership;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.UseCases.Services.Membership
 {
@@ -27,13 +28,15 @@ namespace BMS.UseCases.Services.Membership
     internal sealed class UserManagerService : IUserManagerService
     {
         #region Logger
+        private readonly ILogger<UserManagerService> _logger;
         #endregion
 
         #region Properties & Object Initialization
         private readonly IUserManagerRepository _userManagerRepository;
 
-        public UserManagerService(IUserManagerRepository userManagerRepository)
+        public UserManagerService(IUserManagerRepository userManagerRepository,  ILogger<UserManagerService> logger)
         {
+            _logger = logger;
             _userManagerRepository = userManagerRepository;
         }
         #endregion
@@ -45,9 +48,9 @@ namespace BMS.UseCases.Services.Membership
             {
                 await _userManagerRepository.SaveUserAsync(userViewModel);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Something went wrong on {Method}",  nameof(SaveUserAsync));
                 throw;
             }
         }
@@ -63,9 +66,9 @@ namespace BMS.UseCases.Services.Membership
             {
                 return await _userManagerRepository.LoadUserAsync(roleId, token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadUserAsync));
                 throw;
             }
         }
