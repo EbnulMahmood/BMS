@@ -5,6 +5,7 @@ using BMS.Plugins.EFCore.Data;
 using BMS.UseCases.PluginIRepositories.Membership;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace BMS.Plugins.EFCore.Repositories.Membership
@@ -12,6 +13,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
     internal sealed class UserManagerRepository : IUserManagerRepository
     {
         #region Logger
+        private readonly ILogger<UserManagerRepository> _logger;
         #endregion
 
         #region Properties & Object Initialization
@@ -20,8 +22,12 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
         private readonly IDbContextFactory<BMSDbContext> _contextFactory;
         private bool _busy;
 
-        public UserManagerRepository(IDbContextFactory<BMSDbContext> contextFactory, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserManagerRepository(IDbContextFactory<BMSDbContext> contextFactory
+        , UserManager<ApplicationUser> userManager
+        , RoleManager<IdentityRole> roleManager
+        , ILogger<UserManagerRepository> logger)
         {
+            _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
             _contextFactory = contextFactory;
@@ -61,12 +67,12 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
             }
             catch (DbUpdateConcurrencyException)
             {
-
                 _busy = false;
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(SaveUserAsync));
                 _busy = false;
                 throw;
             }
@@ -125,6 +131,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
             }
             catch (Exception)
             {
+                _logger.LogError("Something went wrong on {Method}", nameof(LoadUserAsync));
                 _busy = false;
                 throw;
             }

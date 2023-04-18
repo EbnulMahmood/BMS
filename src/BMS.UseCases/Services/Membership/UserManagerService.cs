@@ -68,7 +68,7 @@ namespace BMS.UseCases.Services.Membership
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadUserAsync));
+                _logger.LogError(ex, "Something went wrong on {Method} with {RoleId}",  nameof(LoadUserAsync), roleId);
                 throw;
             }
         }

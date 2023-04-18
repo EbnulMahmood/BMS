@@ -2,18 +2,24 @@
 using BMS.Plugins.EFCore.Data;
 using BMS.UseCases.PluginIRepositories.Execute;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.Plugins.EFCore.Repositories
 {
     internal sealed class ExecuteProjectRepository : IExecuteProjectRepository
     {
+        #region Logger
+        private readonly ILogger<ExecuteProjectRepository> _logger;
+        #endregion
+
         #region Properties & Object Initialization
         private readonly IDbContextFactory<BMSDbContext> _contextFactory;
         private bool _busy;
 
-        public ExecuteProjectRepository(IDbContextFactory<BMSDbContext> contextFactory)
+        public ExecuteProjectRepository(IDbContextFactory<BMSDbContext> contextFactory,  ILogger<ExecuteProjectRepository> logger)
         {
             _contextFactory = contextFactory;
+            _logger = logger;
         }
         #endregion
 
@@ -42,8 +48,9 @@ namespace BMS.Plugins.EFCore.Repositories
                 _busy = false;
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(SaveProjectAsync));
                 _busy = false;
                 throw;
             }

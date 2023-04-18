@@ -2,20 +2,24 @@
 using BMS.UseCases.PluginIRepositories.Membership;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.Plugins.EFCore.Repositories.Membership
 {
     internal sealed class RoleManagerRepository : IRoleManagerRepository
     {
         #region Logger
+        private readonly ILogger<RoleManagerRepository> _logger;
         #endregion
 
         #region Properties & Object Initialization
         private readonly RoleManager<IdentityRole> _roleManager;
         private bool _busy;
 
-        public RoleManagerRepository(RoleManager<IdentityRole> roleManager)
+        public RoleManagerRepository(RoleManager<IdentityRole> roleManager
+        , ILogger<RoleManagerRepository> logger)
         {
+            _logger = logger;
             _roleManager = roleManager;
         }
         #endregion
@@ -47,12 +51,12 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
             }
             catch (DbUpdateConcurrencyException)
             {
-
                 _busy = false;
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadRole));
                 _busy = false;
                 throw;
             }

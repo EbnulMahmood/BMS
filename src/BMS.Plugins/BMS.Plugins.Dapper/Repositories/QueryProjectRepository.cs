@@ -1,18 +1,25 @@
 ﻿using BMS.CoreBusiness.Dtos;
 using BMS.Plugins.Dapper.Data;
 using BMS.UseCases.PluginIRepositories.Query;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.Plugins.Dapper.Repositories
 {
     internal sealed class QueryProjectRepository : IQueryProjectRepository
     {
+        #region Logger
+        private readonly ILogger<QueryTaskRepository> _logger;
+        #endregion
+
         #region Properties & Object Initialization
         private readonly IRelationalDataAccess _context;
         private bool _busy;
 
-        public QueryProjectRepository(IRelationalDataAccess context)
+        public QueryProjectRepository(IRelationalDataAccess context
+        , ILogger<QueryTaskRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         #endregion
 
@@ -42,8 +49,9 @@ FROM Projects
 
                 return projectDtoList;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadProjectAsync));
                 _busy = false;
                 throw;
             }
@@ -70,8 +78,9 @@ FROM Projects
 
                 return projectDtoList;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadProjectDropdownAsync));
                 _busy = false;
                 throw;
             }

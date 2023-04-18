@@ -1,18 +1,25 @@
 ﻿using BMS.CoreBusiness.Dtos;
 using BMS.Plugins.Dapper.Data;
 using BMS.UseCases.PluginIRepositories.Query;
+using Microsoft.Extensions.Logging;
 
 namespace BMS.Plugins.Dapper.Repositories
 {
     internal sealed class QueryTaskRepository : IQueryTaskRepository
     {
+        #region Logger
+        private readonly ILogger<QueryTaskRepository> _logger;
+        #endregion
+
         #region Properties & Object Initialization
         private readonly IRelationalDataAccess _context;
         private bool _busy;
 
-        public QueryTaskRepository(IRelationalDataAccess context)
+        public QueryTaskRepository(IRelationalDataAccess context
+        , ILogger<QueryTaskRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         #endregion
 
@@ -76,8 +83,9 @@ LEFT JOIN AspNetUsers AS qar ON qar.Id = t.QAResponsibleId
 
                 return (taskList, recordsCount);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadTaskAsync));
                 _busy = false;
                 throw;
             }

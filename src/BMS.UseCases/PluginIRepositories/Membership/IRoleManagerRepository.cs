@@ -4,9 +4,6 @@ namespace BMS.UseCases.PluginIRepositories.Membership
 {
     public interface IRoleManagerRepository
     {
-        #region Operational Function
-        #endregion
-
         #region Single Instances Loading Function
         #endregion
 
