@@ -12,11 +12,11 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
     {
         #region Logger
         [Inject]
-        protected Microsoft.Extensions.Logging.ILogger<AddDevTaskBase> Logger { get; private set; }
+        protected ILogger<AddDevTaskBase> Logger { get; private set; }
         #endregion
 
         #region Properties & Object Initialization
-        protected DevTaskViewModelCreate ViewModelCreate { get; private set; }
+        protected DevTaskViewModelCreate ViewModelCreate { get; private set; } = new();
         public IEnumerable<ProjectDropdownDto> ProjectDropdownDtoList { get; private set; } = Enumerable.Empty<ProjectDropdownDto>();
         public IEnumerable<ResponsibleUserDto> ResponsibleDeveloperDtoList { get; set; } = Enumerable.Empty<ResponsibleUserDto>();
         public IEnumerable<ResponsibleUserDto> ResponsibleQADtoList { get; set; } = Enumerable.Empty<ResponsibleUserDto>();
@@ -35,10 +35,8 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 
         protected override async Task OnInitializedAsync()
         {
-            Logger.LogInformation("Initialize started");
             try
             {
-                ViewModelCreate = new();
                 editContext = new EditContext(ViewModelCreate);
 
                 ProjectDropdownDtoList = await ProjectService.LoadProjectDropdownAsync();
@@ -49,11 +47,10 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
                 {
                     isInvalidForm = !editContext.Validate();
                 };
-                Logger.LogInformation("Initialize completed");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong on Initialization");
+                Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnInitializedAsync));
             }
         }
         #endregion
@@ -61,16 +58,14 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         #region Operational Function
         protected async Task HandleSubmitAsync()
         {
-            Logger.LogInformation("Initialize started");
             try
             {
                 await TaskService.SaveTaskAsync(ViewModelCreate);
-                Logger.LogInformation("Initialize started");
                 NavigateToTasks();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong on Initialization");
+                Logger.LogError(ex, "Something went wrong on Submit {Method}", nameof(HandleSubmitAsync));
             }
         }
         #endregion
@@ -89,13 +84,11 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         {
             try
             {
-                Logger.LogInformation("Navigate To Tasks stated");
                 NavigationManager.NavigateTo(_tasksUrl);
-                Logger.LogInformation("Navigate To Tasks completed");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong on Navigation");
+                Logger.LogError(ex, "Something went wrong on Navigation {Method}", nameof(NavigateToTasks));
             }
         }
         #endregion

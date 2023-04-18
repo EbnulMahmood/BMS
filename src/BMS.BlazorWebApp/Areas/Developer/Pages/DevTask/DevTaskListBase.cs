@@ -7,6 +7,8 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
     public class DevTaskListBase : ComponentBase
     {
         #region Logger
+        [Inject]
+        protected ILogger<AddDevTaskBase> Logger { get; private set; }
         #endregion
 
         #region Properties & Object Initialization
@@ -18,7 +20,14 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
 
         protected override async Task OnInitializedAsync()
         {
-            await LoadTaskAsync();
+            try
+            {
+                await LoadTaskAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnInitializedAsync));
+            }
         }
         #endregion
 
@@ -31,7 +40,14 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         #region List Loading Function
         private async Task LoadTaskAsync()
         {
-            (Tasks, recordsCount) = await TaskService.LoadTaskAsync();
+            try
+            {
+                (Tasks, recordsCount) = await TaskService.LoadTaskAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong loading task {Method}", nameof(LoadTaskAsync));
+            }
         }
         #endregion
 

@@ -51,6 +51,8 @@ try
 
     var app = builder.Build();
 
+    app.UseSerilogRequestLogging();
+
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
@@ -62,8 +64,6 @@ try
     app.UseHttpsRedirection();
 
     app.UseStaticFiles();
-
-    app.UseSerilogRequestLogging();
 
     app.UseRouting();
 

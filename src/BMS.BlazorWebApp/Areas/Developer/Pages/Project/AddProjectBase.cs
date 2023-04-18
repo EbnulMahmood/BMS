@@ -1,4 +1,5 @@
-﻿using BMS.CoreBusiness.ViewModels;
+﻿using BMS.BlazorWebApp.Areas.Developer.Pages.DevTask;
+using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -8,10 +9,12 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
     public class AddProjectBase : ComponentBase
     {
         #region Logger
+        [Inject]
+        protected ILogger<AddDevTaskBase> Logger { get; private set; }
         #endregion
 
         #region Properties & Object Initialization
-        protected ProjectViewModelCreate ViewModelCreate { get; set; }
+        protected ProjectViewModelCreate ViewModelCreate { get; set; } = new();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
         protected readonly string _projectsUrl = "/Projects";
@@ -23,13 +26,19 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 
         protected override void OnInitialized()
         {
-            ViewModelCreate = new();
-            editContext = new EditContext(ViewModelCreate);
-
-            editContext.OnFieldChanged += (x, y) =>
+            try
             {
-                isInvalidForm = !editContext.Validate();
-            };
+                editContext = new EditContext(ViewModelCreate);
+
+                editContext.OnFieldChanged += (x, y) =>
+                {
+                    isInvalidForm = !editContext.Validate();
+                };
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnInitialized));
+            }
         }
         #endregion
 
@@ -41,10 +50,9 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
                 await ProjectService.SaveProjectAsync(ViewModelCreate);
                 //NavigateToTasks();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Logger.LogError(ex, "Something went wrong on Submit {Method}", nameof(HandleSubmitAsync));
             }
         }
         #endregion
@@ -61,7 +69,14 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #region Helper Function
         protected void NavigateToTasks()
         {
-            NavigationManager.NavigateTo(_projectsUrl);
+            try
+            {
+                NavigationManager.NavigateTo(_projectsUrl);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong on Navigation {Method}", nameof(NavigateToTasks));
+            }
         }
         #endregion
     }
