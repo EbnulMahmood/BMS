@@ -1,7 +1,6 @@
 ﻿using BMS.CoreBusiness.ViewModels.Membership;
 using BMS.UseCases.PluginIRepositories.Membership;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BMS.Plugins.EFCore.Repositories.Membership
@@ -38,7 +37,10 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
             _busy = true;
             try
             {
-                if (_roleManager is null || _roleManager.Roles is null) { return Enumerable.Empty<RoleViewModel>(); }
+                if (_roleManager is null || _roleManager.Roles is null)
+                {
+                    throw new NullReferenceException(nameof(_roleManager));
+                }
 
                 var roleList = _roleManager.Roles.ToList();
 
@@ -49,7 +51,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                            Id = role.Id,
                        };
             }
-            catch (DbUpdateConcurrencyException)
+            catch (NullReferenceException)
             {
                 _busy = false;
                 throw;

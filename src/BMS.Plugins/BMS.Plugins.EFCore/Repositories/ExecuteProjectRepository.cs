@@ -16,7 +16,7 @@ namespace BMS.Plugins.EFCore.Repositories
         private readonly IDbContextFactory<BMSDbContext> _contextFactory;
         private bool _busy;
 
-        public ExecuteProjectRepository(IDbContextFactory<BMSDbContext> contextFactory,  ILogger<ExecuteProjectRepository> logger)
+        public ExecuteProjectRepository(IDbContextFactory<BMSDbContext> contextFactory, ILogger<ExecuteProjectRepository> logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
@@ -32,10 +32,18 @@ namespace BMS.Plugins.EFCore.Repositories
             try
             {
                 using var context = await _contextFactory.CreateDbContextAsync(token);
-                if (context is null || context.Projects is null) { return; }
+                if (context is null || context.Projects is null)
+                {
+                    throw new NullReferenceException(nameof(context));
+                }
 
                 await context.Projects.AddAsync(project, token);
                 await context.SaveChangesAsync(token);
+            }
+            catch (NullReferenceException)
+            {
+                _busy = false;
+                throw;
             }
             catch (OperationCanceledException)
             {

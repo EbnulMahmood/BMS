@@ -32,10 +32,18 @@ namespace BMS.Plugins.EFCore.Repositories
             try
             {
                 using var context = await _contextFactory.CreateDbContextAsync(token);
-                if (context is null || context.Tasks is null) { return; }
+                if (context is null || context.Tasks is null)
+                {
+                    throw new NullReferenceException(nameof(context));
+                }
 
                 await context.Tasks.AddAsync(devTask, token);
                 await context.SaveChangesAsync(token);
+            }
+            catch (NullReferenceException)
+            {
+                _busy = false;
+                throw;
             }
             catch (OperationCanceledException)
             {

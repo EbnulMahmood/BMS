@@ -56,7 +56,7 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+                if (viewModel is null) throw new NullReferenceException(nameof(viewModel));
 
                 var project = new Project
                 {
@@ -70,7 +70,7 @@ namespace BMS.UseCases.Services
 
                 await _executeProjectRepository.SaveProjectAsync(project, token);
             }
-            catch (ArgumentNullException)
+            catch (NullReferenceException)
             {
                 throw;
             }
@@ -92,9 +92,9 @@ namespace BMS.UseCases.Services
             {
                 return await _queryProjectRepository.LoadProjectAsync(token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError("Something went wrong on {Method}", nameof(LoadProjectAsync));
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadProjectAsync));
                 throw;
             }
         }
@@ -105,9 +105,9 @@ namespace BMS.UseCases.Services
             {
                 return await _queryProjectRepository.LoadProjectDropdownAsync(token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError("Something went wrong on {Method}", nameof(LoadProjectDropdownAsync));
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadProjectDropdownAsync));
                 throw;
             }
         }

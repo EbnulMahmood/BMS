@@ -57,7 +57,7 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                if (viewModel is null) throw new ArgumentNullException(nameof(viewModel));
+                if (viewModel is null) throw new NullReferenceException(nameof(viewModel));
 
                 DevTaskViewModelValidation(viewModel);
 
@@ -89,11 +89,7 @@ namespace BMS.UseCases.Services
 
                 await _executeTaskRepository.SaveTaskAsync(devTask, token);
             }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
-            catch (InvalidDataException)
+            catch (NullReferenceException)
             {
                 throw;
             }
@@ -115,9 +111,9 @@ namespace BMS.UseCases.Services
             {
                 return await _queryTaskRepository.LoadTaskAsync(token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError("Something went wrong on {Method}", nameof(LoadTaskAsync));
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadTaskAsync));
                 throw;
             }
         }

@@ -51,7 +51,10 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                     EmailConfirmed = true
                 };
 
-                if (_userManager is null || _roleManager is null || _roleManager.Roles is null) { return; }
+                if (_userManager is null || _roleManager is null || _roleManager.Roles is null)
+                {
+                    throw new NullReferenceException(nameof(_userManager));
+                }
                 var result = await _userManager.CreateAsync(applicationUser, "@E0b0nul");
 
                 if (result.Succeeded)
@@ -64,6 +67,11 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                     var claimAddedResult = await _userManager.AddClaimAsync(applicationUser, new Claim(role?.Name ?? "User", role?.Id ?? ""));
                     if (claimAddedResult.Succeeded) { message = "New User, Role and Claim Added!"; }
                 }
+            }
+            catch (NullReferenceException)
+            {
+                _busy = false;
+                throw;
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,7 +102,10 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
             _busy = true;
             try
             {
-                if (_roleManager is null || _roleManager.Roles is null) { return Enumerable.Empty<ResponsibleUserDto>(); }
+                if (_roleManager is null || _roleManager.Roles is null)
+                {
+                    throw new NullReferenceException(nameof(_roleManager));
+                }
 
                 var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name.Contains(roleName.Trim()), token);
                 if (role == null) throw new InvalidDataException(nameof(role));
@@ -102,7 +113,7 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                 using var context = await _contextFactory.CreateDbContextAsync(token);
                 if (context is null || context.Users is null || context.UserRoles is null || context.Roles is null)
                 {
-                    return Enumerable.Empty<ResponsibleUserDto>();
+                    throw new NullReferenceException(nameof(context));
                 }
 
                 return await (from u in context.Users
@@ -118,14 +129,13 @@ namespace BMS.Plugins.EFCore.Repositories.Membership
                               }).ToListAsync(token);
 
             }
-            catch (OperationCanceledException)
+            catch (NullReferenceException)
             {
                 _busy = false;
                 throw;
             }
-            catch (DbUpdateConcurrencyException)
+            catch (OperationCanceledException)
             {
-
                 _busy = false;
                 throw;
             }
