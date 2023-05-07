@@ -56,7 +56,14 @@ namespace BMS.UseCases.Services
         {
             try
             {
+                if (token.IsCancellationRequested == true)
+                {
+                    throw new OperationCanceledException(token);
+                }
+                
                 if (viewModel is null) throw new NullReferenceException(nameof(viewModel));
+
+                await CkeckBeforeSaveAsync(viewModel.Name, token);
 
                 var project = new Project
                 {
@@ -70,7 +77,15 @@ namespace BMS.UseCases.Services
 
                 await _executeProjectRepository.SaveProjectAsync(project, token);
             }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
             catch (NullReferenceException)
+            {
+                throw;
+            }
+            catch (InvalidDataException)
             {
                 throw;
             }
@@ -117,6 +132,44 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Helper Function
+        public async Task CkeckBeforeSaveAsync(string name, CancellationToken token = default)
+        {
+            try
+            {
+                if (token.IsCancellationRequested == true)
+                {
+                    throw new OperationCanceledException(token);
+                }
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    throw new ArgumentNullException(nameof(name));
+                }
+
+                var isDuplicateProjectName = await _queryProjectRepository.IsDuplicateProjectNameAsync(name, token);
+
+                if (isDuplicateProjectName == true)
+                {
+                    throw new InvalidDataException("Duplicate Project Name");
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (InvalidDataException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

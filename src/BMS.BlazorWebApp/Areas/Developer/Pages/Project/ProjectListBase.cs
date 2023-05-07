@@ -22,6 +22,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         protected IQueryable<ProjectDto>? FilteredItems => Projects?.AsQueryable()?.Where(x => x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
         protected string Message { get; private set; } = string.Empty;
+        protected bool IsDisplayNone { get; private set; } = true;
         [Inject]
         public IProjectService ProjectService { get; private set; }
         public int recordsCount = 0;
@@ -39,9 +40,10 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Operational Function
-        protected void Edit(ProjectDto projectDto)
+        protected Task EditAsync(ProjectDto projectDto)
         {
             Message = $"Editing {projectDto.Name}";
+            return Task.CompletedTask;
         }
         #endregion
 
@@ -66,6 +68,15 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Helper Function
+        public void ToggleAddProduct()
+        {
+            IsDisplayNone = false;
+        }
+
+        public async Task OnProjectAddAsync()
+        {
+            await LoadProjectAsync();
+        }
         #endregion
     }
 }

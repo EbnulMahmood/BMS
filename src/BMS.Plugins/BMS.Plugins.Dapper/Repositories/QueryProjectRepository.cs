@@ -44,6 +44,7 @@ p.Name
 FROM Projects AS p
 LEFT JOIN AspNetUsers AS cb ON cb.Id = P.CreatedById
 LEFT JOIN AspNetUsers AS lmb ON lmb.Id = P.LastModifiedById
+ORDER BY p.CreatedOnUtc DESC
 ";
                 return await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { });
             }
@@ -93,6 +94,32 @@ FROM Projects
         #endregion
 
         #region Helper Function
+        public Task<bool> IsDuplicateProjectNameAsync(string name, CancellationToken token = default)
+        {
+            if (_busy) return Task.FromResult(false);
+
+            _busy = true;
+            try
+            {
+                string query = $@"/*QueryProjectRepository=>IsDuplicateProjectNameAsync*/
+SELECT 
+COUNT(1)
+FROM Projects
+WHERE Name = @Name
+";
+                return _context.GetFirstOrDefaultDataAsync<bool, dynamic>(query, new { Name = name });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(IsDuplicateProjectNameAsync));
+                _busy = false;
+                throw;
+            }
+            finally
+            {
+                _busy = false;
+            }
+        }
         #endregion
     }
 }

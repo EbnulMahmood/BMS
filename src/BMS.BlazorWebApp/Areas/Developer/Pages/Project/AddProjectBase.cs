@@ -14,10 +14,11 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Properties & Object Initialization
-        protected ProjectViewModelCreate ViewModelCreate { get; set; } = new();
+        public ProjectViewModelCreate ViewModelCreate { get; set; } = new();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
-        protected readonly string _projectsUrl = "/Projects";
+        [Parameter]
+        public EventCallback OnProjectAddAsync { get; set; }
 
         [Inject]
         public IProjectService ProjectService { get; set; }
@@ -48,7 +49,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             try
             {
                 await ProjectService.SaveProjectAsync(ViewModelCreate);
-                //NavigateToTasks();
+                await OnProjectAddAsync.InvokeAsync();
             }
             catch (Exception ex)
             {
@@ -67,17 +68,6 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Helper Function
-        protected void NavigateToTasks()
-        {
-            try
-            {
-                NavigationManager.NavigateTo(_projectsUrl);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "Something went wrong on Navigation {Method}", nameof(NavigateToTasks));
-            }
-        }
         #endregion
     }
 }

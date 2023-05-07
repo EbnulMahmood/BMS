@@ -1,27 +1,21 @@
-﻿@page "/Developer/AddProject"
-@attribute [Authorize]
+﻿@attribute [Authorize]
 
 @using BMS.CoreBusiness.Enums;
 @inherits AddProjectBase
 
-<PageTitle>Add Project</PageTitle>
-
 <EditForm EditContext="@editContext" OnSubmit="async () => await HandleSubmitAsync()">
     <DataAnnotationsValidator />
-    <div class="container">
-        <h3>Add Project</h3>
-        <div class="row pb-2">
-            <div class="form-group col-xl-12 col-md-12 col-sm-12">
-                <label for="name" class="control-label">Name</label>
-                <InputText @bind-Value="@ViewModelCreate.Name" id="name" class="form-control" />
-                <ValidationMessage For="@(() => ViewModelCreate.Name)" />
-            </div>
+    <div class="row pb-2">
+        <div class="form-group col-xl-12 col-md-12 col-sm-12">
+            <label for="name" class="control-label">Name</label>
+            <InputText @bind-Value="@ViewModelCreate.Name" id="name" class="form-control" />
+            <ValidationMessage For="@(() => ViewModelCreate.Name)" />
         </div>
+    </div>
 
-        <div class="row pb-2">
-            <div class="form-group col-xl-6 col-md-2 col-sm-12">
-                <button disabled="@isInvalidForm" type="submit" class="btn btn-primary">Add</button>
-            </div>
+    <div class="row pb-2">
+        <div class="form-group col-xl-6 col-md-2 col-sm-12">
+            <button disabled="@isInvalidForm" type="submit" class="btn btn-primary">Add</button>
         </div>
     </div>
 </EditForm>
