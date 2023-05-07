@@ -1,0 +1,33 @@
+﻿@page "/Developer/Projects"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inherits ProjectListBase
+
+<PageTitle>Project List</PageTitle>
+
+@if (Projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p><em>@Message</em></p>
+    <div class="grid">
+        <QuickGrid Items="@FilteredItems" Pagination="@pagination">
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true" IsDefaultSort="SortDirection.Ascending" Class="project-name">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder="Project name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(p => p.CreatedBy)" Title="Created By" Sortable="true" />
+            <PropertyColumn Property="@(p => p.LastModifiedBy)" Title="Last Modified By" Sortable="true" />
+            <PropertyColumn Property="@(p => p.CreatedOnUtc)" Title="Created On" Format="MM/dd/yyyy hh:mm tt" Sortable="true" />
+            <PropertyColumn Property="@(p => p.LastModifiedOnUtc)" Title="Last Modified On" Format="MM/dd/yyyy hh:mm tt" Sortable="true" />
+            <TemplateColumn Title="Action">
+                <button class="btn btn-primary" @onclick="() => Edit(context)">Edit</button>
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
+    <Paginator Value="@pagination" />
+}

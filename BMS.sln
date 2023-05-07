@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Plugins.EFCore", "src\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.BlazorWebApp", "src\BMS.BlazorWebApp\BMS.BlazorWebApp.csproj", "{8D08B981-A186-44C6-B20B-51DD6A0B246C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Plugins.Dapper", "src\BMS.Plugins\BMS.Plugins.Dapper\BMS.Plugins.Dapper.csproj", "{6A058E5A-2A95-4D29-AAE4-A315D2442560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Plugins.Dapper", "src\BMS.Plugins\BMS.Plugins.Dapper\BMS.Plugins.Dapper.csproj", "{6A058E5A-2A95-4D29-AAE4-A315D2442560}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

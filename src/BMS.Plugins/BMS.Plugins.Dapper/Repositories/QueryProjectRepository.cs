@@ -36,18 +36,16 @@ namespace BMS.Plugins.Dapper.Repositories
             {
                 string query = $@"/*QueryProjectRepository=>LoadProjectAsync*/
 SELECT 
-Id
-,Name
-,CreatedById
-,CreatedOnUtc
-,LastModifiedById
-,LastModifiedOnUtc
-,IPAddress
-FROM Projects
+p.Name
+,cb.UserName AS CreatedBy
+,lmb.UserName AS LastModifiedBy
+,p.CreatedOnUtc
+,p.LastModifiedOnUtc
+FROM Projects AS p
+LEFT JOIN AspNetUsers AS cb ON cb.Id = P.CreatedById
+LEFT JOIN AspNetUsers AS lmb ON lmb.Id = P.LastModifiedById
 ";
-                var projectDtoList = await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { });
-
-                return projectDtoList;
+                return await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { });
             }
             catch (Exception ex)
             {

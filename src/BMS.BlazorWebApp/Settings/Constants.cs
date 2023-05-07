@@ -10,7 +10,10 @@
         public static readonly string hostPage = "/_Host";
 
         public static readonly string appsettingsFileName = "appsettings.json";
+
+        public const int InitItemsPerPage = 10;
     }
+
 
     public static class PolicyConstants
     {

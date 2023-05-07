@@ -12,7 +12,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         #endregion
 
         #region Properties & Object Initialization
-        public IEnumerable<DevTaskDto> Tasks { get; set; } = Enumerable.Empty<DevTaskDto>();
+        public IEnumerable<DevTaskDto> Tasks { get; private set; } = Enumerable.Empty<DevTaskDto>();
         public int recordsCount = 0;
 
         [Inject]
