@@ -58,14 +58,17 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             catch (OperationCanceledException ex)
             {
                 message = ex.Message;
+                Logger.LogError(ex, ex.Message);
             }
             catch (NullReferenceException ex)
             {
                 message = ex.Message;
+                Logger.LogError(ex, ex.Message);
             }
             catch (InvalidDataException ex)
             {
                 message = ex.Message;
+                Logger.LogError(ex, ex.Message);
             }
             catch (Exception ex)
             {

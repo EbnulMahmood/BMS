@@ -1,25 +1,27 @@
 ﻿@page "/Developer/Projects"
 @using BMS.BlazorWebApp.Areas.Helper.Pages.Aleart
+@using BMS.BlazorWebApp.Areas.Helper.Pages.Loader
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inherits ProjectListBase
 
 <PageTitle>Project List</PageTitle>
 
 <div class="container">
-    @if (IsDisplayAddProduct == true)
+
+    @if (Projects == null || IsLoading == true)
     {
-        <button type="button" class="btn btn-primary mb-2" @onclick="ToggleAddProduct">Add Product</button>
-    }
-    @if (IsDisplayAddProduct == false)
-    {
-        <AddProject OnProjectAddCompletedAsync="(args) => OnProjectAddCompletedAsync(args.Item1, args.Item2)" />
-    }
-    @if (Projects == null)
-    {
-        <p><em>Loading...</em></p>
+        <DisplayLoader />
     }
     else
     {
+        @if (IsDisplayAddProject == true)
+        {
+            <button type="button" class="btn btn-primary mb-2" @onclick="ToggleAddProject">Add Project</button>
+        }
+        @if (IsDisplayAddProject == false)
+        {
+            <AddProject OnProjectAddCompletedAsync="async (args) => await OnProjectAddCompletedAsync(args.Item1, args.Item2)" />
+        }
         @if (IsDisplayAleart == true)
         {
             <DisplayAleart OnAleartDismissed="DismissAleart" Message="@Message" MessageType="@MessageType" />

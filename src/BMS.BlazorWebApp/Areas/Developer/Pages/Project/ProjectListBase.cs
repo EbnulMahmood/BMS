@@ -15,21 +15,25 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Properties & Object Initialization
+        [Inject]
+        public IProjectService ProjectService { get; private set; }
         protected IEnumerable<ProjectDto> Projects { get; private set; } = new List<ProjectDto>();
         protected PaginationState pagination = new() { ItemsPerPage = Constants.InitItemsPerPage };
 
         protected string nameFilter = string.Empty;
-        protected IQueryable<ProjectDto>? FilteredItems => Projects?.AsQueryable()?.Where(x => x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+        protected IQueryable<ProjectDto>? FilteredItems => Projects?
+            .AsQueryable()?
+            .Where(x => x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
+        protected bool IsLoading { get; private set; } = false;
         protected string Message { get; private set; } = string.Empty;
         protected string MessageType { get; private set; } = string.Empty;
-        protected bool IsDisplayAddProduct { get; private set; } = true;
+        protected bool IsDisplayAddProject { get; private set; } = true;
         protected bool IsDisplayAleart { get; private set; } = false;
-        [Inject]
-        public IProjectService ProjectService { get; private set; }
-        public int recordsCount = 0;
+
         protected override async Task OnInitializedAsync()
         {
+            IsLoading = true;
             try
             {
                 await LoadProjectAsync();
@@ -37,6 +41,10 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnInitializedAsync));
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
         #endregion
@@ -54,6 +62,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #region List Loading Function
         private async Task LoadProjectAsync()
         {
+            IsLoading = true;
             try
             {
                 Projects = await ProjectService.LoadProjectAsync();
@@ -62,6 +71,10 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             {
                 Logger.LogError(ex, "Something went wrong loading task {Method}", nameof(LoadProjectAsync));
             }
+            finally
+            {
+                IsLoading = false;
+            }
         }
         #endregion
 
@@ -69,13 +82,14 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Helper Function
-        public void ToggleAddProduct()
+        public void ToggleAddProject()
         {
-            IsDisplayAddProduct = false;
+            IsDisplayAddProject = false;
         }
 
         public async Task OnProjectAddCompletedAsync(string message, string type)
         {
+            IsLoading = true;
             try
             {
                 Message = message ?? string.Empty;
@@ -86,6 +100,10 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Something went wrong on {Method}", nameof(OnProjectAddCompletedAsync));
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
