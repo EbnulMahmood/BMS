@@ -1,0 +1,6 @@
+﻿@inherits DisplayAleartBase
+
+<div class="alert alert-@MessageType alert-dismissible fade show" role="alert">
+    @Message
+    <button @onclick="OnAleartDismissed" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>

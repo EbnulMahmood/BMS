@@ -107,7 +107,7 @@ COUNT(1)
 FROM Projects
 WHERE Name = @Name
 ";
-                return _context.GetFirstOrDefaultDataAsync<bool, dynamic>(query, new { Name = name });
+                return _context.GetFirstOrDefaultDataAsync<bool, dynamic>(query, new { Name = name.Trim() });
             }
             catch (Exception ex)
             {

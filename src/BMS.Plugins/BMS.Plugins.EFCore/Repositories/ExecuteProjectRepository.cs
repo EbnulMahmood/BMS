@@ -34,7 +34,7 @@ namespace BMS.Plugins.EFCore.Repositories
                 using var context = await _contextFactory.CreateDbContextAsync(token);
                 if (context is null || context.Projects is null)
                 {
-                    throw new NullReferenceException(nameof(context));
+                    throw new NullReferenceException("Null context found");
                 }
 
                 await context.Projects.AddAsync(project, token);

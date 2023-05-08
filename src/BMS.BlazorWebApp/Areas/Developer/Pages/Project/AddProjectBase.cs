@@ -1,4 +1,5 @@
 ﻿using BMS.BlazorWebApp.Areas.Developer.Pages.DevTask;
+using BMS.BlazorWebApp.Helpers;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +19,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         protected EditContext editContext;
         protected bool isInvalidForm = true;
         [Parameter]
-        public EventCallback OnProjectAddAsync { get; set; }
+        public EventCallback<(string, string)> OnProjectAddCompletedAsync { get; set; }
 
         [Inject]
         public IProjectService ProjectService { get; set; }
@@ -46,15 +47,32 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #region Operational Function
         protected async Task HandleSubmitAsync()
         {
+            string message = string.Empty;
+            string type = "danger";
             try
             {
                 await ProjectService.SaveProjectAsync(ViewModelCreate);
-                await OnProjectAddAsync.InvokeAsync();
+                message = $"{ViewModelCreate.Name} added successfully";
+                type = "success";
+            }
+            catch (OperationCanceledException ex)
+            {
+                message = ex.Message;
+            }
+            catch (NullReferenceException ex)
+            {
+                message = ex.Message;
+            }
+            catch (InvalidDataException ex)
+            {
+                message = ex.Message;
             }
             catch (Exception ex)
             {
+                message = WebHelper.SetExceptionMessage(ex);
                 Logger.LogError(ex, "Something went wrong on Submit {Method}", nameof(HandleSubmitAsync));
             }
+            await OnProjectAddCompletedAsync.InvokeAsync((message, type));
         }
         #endregion
 

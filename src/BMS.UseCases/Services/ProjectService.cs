@@ -58,10 +58,10 @@ namespace BMS.UseCases.Services
             {
                 if (token.IsCancellationRequested == true)
                 {
-                    throw new OperationCanceledException(token);
+                    throw new OperationCanceledException("Operation was canceled");
                 }
                 
-                if (viewModel is null) throw new NullReferenceException(nameof(viewModel));
+                if (viewModel is null) throw new NullReferenceException("Null project found");
 
                 await CkeckBeforeSaveAsync(viewModel.Name, token);
 
@@ -75,7 +75,7 @@ namespace BMS.UseCases.Services
                     IPAddress = _commonService.RemoteIpAddress,
                 };
 
-                await _executeProjectRepository.SaveProjectAsync(project, token);
+               await _executeProjectRepository.SaveProjectAsync(project, token);
             }
             catch (OperationCanceledException)
             {
@@ -132,13 +132,13 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region Helper Function
-        public async Task CkeckBeforeSaveAsync(string name, CancellationToken token = default)
+        private async Task CkeckBeforeSaveAsync(string name, CancellationToken token = default)
         {
             try
             {
                 if (token.IsCancellationRequested == true)
                 {
-                    throw new OperationCanceledException(token);
+                    throw new OperationCanceledException("Operation was canceled");
                 }
 
                 if (string.IsNullOrWhiteSpace(name))
@@ -150,7 +150,7 @@ namespace BMS.UseCases.Services
 
                 if (isDuplicateProjectName == true)
                 {
-                    throw new InvalidDataException("Duplicate Project Name");
+                    throw new InvalidDataException($"Project \"{name}\" already exists in database");
                 }
             }
             catch (OperationCanceledException)

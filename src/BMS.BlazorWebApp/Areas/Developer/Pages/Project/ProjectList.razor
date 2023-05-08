@@ -1,14 +1,18 @@
 ﻿@page "/Developer/Projects"
+@using BMS.BlazorWebApp.Areas.Helper.Pages.Aleart
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inherits ProjectListBase
 
 <PageTitle>Project List</PageTitle>
 
 <div class="container">
-    <button type="button" style="display:@(IsDisplayNone == false ? "None" : "")" class="btn btn-primary" @onclick="ToggleAddProduct">Add Product</button>
-    @if (IsDisplayNone == false)
+    @if (IsDisplayAddProduct == true)
     {
-        <AddProject OnProjectAddAsync="OnProjectAddAsync" />
+        <button type="button" class="btn btn-primary mb-2" @onclick="ToggleAddProduct">Add Product</button>
+    }
+    @if (IsDisplayAddProduct == false)
+    {
+        <AddProject OnProjectAddCompletedAsync="(args) => OnProjectAddCompletedAsync(args.Item1, args.Item2)" />
     }
     @if (Projects == null)
     {
@@ -16,7 +20,11 @@
     }
     else
     {
-        <p><em>@Message</em></p>
+        @if (IsDisplayAleart == true)
+        {
+            <DisplayAleart OnAleartDismissed="DismissAleart" Message="@Message" MessageType="@MessageType" />
+        }
+
         <div class="grid">
             <QuickGrid Items="@FilteredItems" Pagination="@pagination">
                 <PropertyColumn Property="@(p => p.Name)" Sortable="true" Class="project-name">

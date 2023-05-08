@@ -22,7 +22,9 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         protected IQueryable<ProjectDto>? FilteredItems => Projects?.AsQueryable()?.Where(x => x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
         protected string Message { get; private set; } = string.Empty;
-        protected bool IsDisplayNone { get; private set; } = true;
+        protected string MessageType { get; private set; } = string.Empty;
+        protected bool IsDisplayAddProduct { get; private set; } = true;
+        protected bool IsDisplayAleart { get; private set; } = false;
         [Inject]
         public IProjectService ProjectService { get; private set; }
         public int recordsCount = 0;
@@ -42,8 +44,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #region Operational Function
         protected Task EditAsync(ProjectDto projectDto)
         {
-            Message = $"Editing {projectDto.Name}";
-            return Task.CompletedTask;
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -70,12 +71,27 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #region Helper Function
         public void ToggleAddProduct()
         {
-            IsDisplayNone = false;
+            IsDisplayAddProduct = false;
         }
 
-        public async Task OnProjectAddAsync()
+        public async Task OnProjectAddCompletedAsync(string message, string type)
         {
-            await LoadProjectAsync();
+            try
+            {
+                Message = message ?? string.Empty;
+                MessageType = type ?? string.Empty;
+                IsDisplayAleart = true;
+                await LoadProjectAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong on {Method}", nameof(OnProjectAddCompletedAsync));
+            }
+        }
+
+        public void DismissAleart()
+        {
+            IsDisplayAleart = false;
         }
         #endregion
     }
