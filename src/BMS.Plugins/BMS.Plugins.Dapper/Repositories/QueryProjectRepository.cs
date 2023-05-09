@@ -35,18 +35,13 @@ namespace BMS.Plugins.Dapper.Repositories
             try
             {
                 string query = $@"/*QueryProjectRepository=>LoadProjectAsync*/
-WITH project_ids AS (
-  SELECT Id
-  FROM Projects
-)
-SELECT
+SELECT 
 p.Name
 ,cb.UserName AS CreatedBy
 ,lmb.UserName AS LastModifiedBy
 ,p.CreatedOnUtc
 ,p.LastModifiedOnUtc
-FROM project_ids AS tp
-INNER JOIN Projects AS p ON tp.Id = p.Id
+FROM Projects AS p
 INNER JOIN AspNetUsers AS cb ON cb.Id = p.CreatedById
 INNER JOIN AspNetUsers AS lmb ON lmb.Id = p.LastModifiedById
 ORDER BY p.CreatedOnUtc DESC
