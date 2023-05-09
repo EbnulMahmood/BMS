@@ -85,6 +85,10 @@ namespace BMS.UseCases.Services
             {
                 throw;
             }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
             catch (InvalidDataException)
             {
                 throw;

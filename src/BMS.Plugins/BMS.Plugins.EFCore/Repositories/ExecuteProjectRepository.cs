@@ -67,6 +67,50 @@ namespace BMS.Plugins.EFCore.Repositories
                 _busy = false;
             }
         }
+
+        public async Task UpdateProjectAsync(Project project, CancellationToken token = default)
+        {
+            if (_busy) { return; }
+
+            _busy = true;
+            try
+            {
+                using var context = await _contextFactory.CreateDbContextAsync(token);
+                if (context is null || context.Projects is null)
+                {
+                    throw new NullReferenceException("Null context found");
+                }
+
+                context.Projects.Update(project);
+                await context.SaveChangesAsync(token);
+            }
+            catch (NullReferenceException)
+            {
+                _busy = false;
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                _busy = false;
+                throw;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                _busy = false;
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(SaveProjectAsync));
+                _busy = false;
+                throw;
+            }
+            finally
+            {
+                _busy = false;
+            }
+        }
         #endregion
 
         #region Others Function

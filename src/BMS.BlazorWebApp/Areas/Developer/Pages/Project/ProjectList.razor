@@ -1,6 +1,7 @@
 ﻿@page "/Developer/Projects"
 @using BMS.BlazorWebApp.Areas.Helper.Pages.Aleart
 @using BMS.BlazorWebApp.Areas.Helper.Pages.Loader
+@using BMS.BlazorWebApp.Helpers;
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inherits ProjectListBase
 
@@ -26,6 +27,16 @@
         {
             <DisplayAleart OnAleartDismissed="DismissAleart" Message="@Message" MessageType="@MessageType" />
         }
+
+        <div class="page-size-chooser">
+            Items per page:
+            <select @bind="pagination.ItemsPerPage">
+                @foreach (var item in WebHelper.ItemsPerPageList)
+                {
+                    <option>@item</option>
+                }
+            </select>
+        </div>
 
         <div class="grid">
             <QuickGrid Items="@FilteredItems" Pagination="@pagination">

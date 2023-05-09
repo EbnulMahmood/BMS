@@ -1,5 +1,4 @@
-﻿using BMS.BlazorWebApp.Areas.Developer.Pages.DevTask;
-using BMS.BlazorWebApp.Helpers;
+﻿using BMS.BlazorWebApp.Helpers;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
@@ -7,19 +6,19 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 {
-    public class AddProjectBase : ComponentBase
+    public class EditProjectBase : ComponentBase
     {
         #region Logger
         [Inject]
-        protected ILogger<AddDevTaskBase> Logger { get; private set; }
+        protected ILogger<EditProjectBase> Logger { get; private set; }
         #endregion
 
         #region Properties & Object Initialization
-        protected ProjectViewModelCreate ViewModelCreate { get; set; } = new();
+        public ProjectViewModelEdit ViewModelEdit { get; set; } = new();
         protected EditContext editContext;
         protected bool isInvalidForm = true;
         [Parameter]
-        public EventCallback<(string, string)> OnProjectAddCompletedAsync { get; set; }
+        public EventCallback<(string, string)> OnProjectEditCompletedAsync { get; set; }
 
         [Inject]
         protected IProjectService ProjectService { get; set; }
@@ -28,7 +27,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         {
             try
             {
-                editContext = new EditContext(ViewModelCreate);
+                editContext = new EditContext(ViewModelEdit);
 
                 editContext.OnFieldChanged += (x, y) =>
                 {
@@ -49,8 +48,8 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             string type = "danger";
             try
             {
-                await ProjectService.SaveProjectAsync(ViewModelCreate);
-                message = $"{ViewModelCreate.Name} added successfully";
+                //await ProjectService.UpdateProjectAsync(ViewModelEdit);
+                message = $"{ViewModelEdit.Name} updated successfully";
                 type = "success";
             }
             catch (OperationCanceledException ex)
@@ -59,11 +58,6 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
                 Logger.LogError(ex, ex.Message);
             }
             catch (NullReferenceException ex)
-            {
-                message = ex.Message;
-                Logger.LogError(ex, ex.Message);
-            }
-            catch (ArgumentNullException ex)
             {
                 message = ex.Message;
                 Logger.LogError(ex, ex.Message);
@@ -78,7 +72,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
                 message = WebHelper.SetExceptionMessage(ex);
                 Logger.LogError(ex, "Something went wrong on Submit {Method}", nameof(HandleSubmitAsync));
             }
-            await OnProjectAddCompletedAsync.InvokeAsync((message, type));
+            await OnProjectEditCompletedAsync.InvokeAsync((message, type));
         }
         #endregion
 

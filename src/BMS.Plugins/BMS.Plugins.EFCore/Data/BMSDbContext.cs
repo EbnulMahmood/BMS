@@ -17,6 +17,11 @@ namespace BMS.Plugins.EFCore.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Project>()
+                .HasIndex(p => p.Name)
+                .HasDatabaseName("Index_Name")
+                .IsUnique();
+
             builder.Entity<DevTask>()
                 .HasOne<Project>()
                 .WithMany()

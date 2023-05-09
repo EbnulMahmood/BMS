@@ -35,15 +35,20 @@ namespace BMS.Plugins.Dapper.Repositories
             try
             {
                 string query = $@"/*QueryProjectRepository=>LoadProjectAsync*/
-SELECT 
+WITH project_ids AS (
+  SELECT Id
+  FROM Projects
+)
+SELECT
 p.Name
 ,cb.UserName AS CreatedBy
 ,lmb.UserName AS LastModifiedBy
 ,p.CreatedOnUtc
 ,p.LastModifiedOnUtc
-FROM Projects AS p
-LEFT JOIN AspNetUsers AS cb ON cb.Id = P.CreatedById
-LEFT JOIN AspNetUsers AS lmb ON lmb.Id = P.LastModifiedById
+FROM project_ids AS tp
+INNER JOIN Projects AS p ON tp.Id = p.Id
+INNER JOIN AspNetUsers AS cb ON cb.Id = p.CreatedById
+INNER JOIN AspNetUsers AS lmb ON lmb.Id = p.LastModifiedById
 ORDER BY p.CreatedOnUtc DESC
 ";
                 return await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { });
@@ -103,8 +108,8 @@ FROM Projects
             {
                 string query = $@"/*QueryProjectRepository=>IsDuplicateProjectNameAsync*/
 SELECT 
-COUNT(1)
-FROM Projects
+COUNT(*) 
+FROM Projects WITH (INDEX(Index_Name))
 WHERE Name = @Name
 ";
                 return _context.GetFirstOrDefaultDataAsync<bool, dynamic>(query, new { Name = name.Trim() });

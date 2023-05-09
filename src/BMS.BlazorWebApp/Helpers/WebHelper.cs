@@ -2,6 +2,14 @@
 {
     public static class WebHelper
     {
+        public static readonly int[] ItemsPerPageList = {
+            5,
+            10,
+            20,
+            50,
+            100
+        };
+
         public static string SetExceptionMessage(Exception ex, string moreInfo = "")
         {
             Type exceptionType = ex.GetType();

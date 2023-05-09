@@ -71,11 +71,11 @@ t.Title
 ,t.TestFeatureAndScenario
 ,t.WebRequestKey
 FROM Tasks AS t
-LEFT JOIN Projects AS p ON p.Id = t.ProjectId
+INNER JOIN Projects AS p ON p.Id = t.ProjectId
+INNER JOIN AspNetUsers AS cb ON cb.Id = t.CreatedById
+INNER JOIN AspNetUsers AS lmb ON lmb.Id = t.LastModifiedById
 LEFT JOIN AspNetUsers AS r1 ON r1.Id = t.Responsible1Id
 LEFT JOIN AspNetUsers AS r2 ON r2.Id = t.Responsible2Id
-LEFT JOIN AspNetUsers AS cb ON cb.Id = t.CreatedById
-LEFT JOIN AspNetUsers AS lmb ON lmb.Id = t.LastModifiedById
 LEFT JOIN AspNetUsers AS qar ON qar.Id = t.QAResponsibleId
 ";
                     taskList = await _context.LoadDataAsync<DevTaskDto, dynamic>(query, new { });
