@@ -22,7 +22,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         {
             try
             {
-                await LoadTaskAsync();
+                await LoadTaskDtoAsync();
             }
             catch (Exception ex)
             {
@@ -38,15 +38,15 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
         #endregion
 
         #region List Loading Function
-        private async Task LoadTaskAsync()
+        private async Task LoadTaskDtoAsync()
         {
             try
             {
-                (Tasks, recordsCount) = await TaskService.LoadTaskAsync();
+                (Tasks, recordsCount) = await TaskService.LoadTaskDtoAsync();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong loading task {Method}", nameof(LoadTaskAsync));
+                Logger.LogError(ex, "Something went wrong loading task {Method}", nameof(LoadTaskDtoAsync));
             }
         }
         #endregion

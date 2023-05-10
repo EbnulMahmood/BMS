@@ -36,7 +36,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             IsLoading = true;
             try
             {
-                await LoadProjectAsync();
+                await LoadProjectDtoAsync();
             }
             catch (Exception ex)
             {
@@ -60,16 +60,16 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region List Loading Function
-        private async Task LoadProjectAsync()
+        private async Task LoadProjectDtoAsync()
         {
             IsLoading = true;
             try
             {
-                Projects = await ProjectService.LoadProjectAsync();
+                Projects = await ProjectService.LoadProjectDtoAsync();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong loading task {Method}", nameof(LoadProjectAsync));
+                Logger.LogError(ex, "Something went wrong loading task {Method}", nameof(LoadProjectDtoAsync));
             }
             finally
             {
@@ -95,7 +95,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
                 Message = message ?? string.Empty;
                 MessageType = type ?? string.Empty;
                 IsDisplayAleart = true;
-                await LoadProjectAsync();
+                await LoadProjectDtoAsync();
             }
             catch (Exception ex)
             {

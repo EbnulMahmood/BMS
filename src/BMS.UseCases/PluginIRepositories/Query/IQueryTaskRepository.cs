@@ -8,7 +8,7 @@ namespace BMS.UseCases.PluginIRepositories.Query
         #endregion
 
         #region List Loading Function
-        Task<(IEnumerable<DevTaskDto>, int)> LoadTaskAsync(CancellationToken token = default);
+        Task<(IEnumerable<DevTaskDto>, int)> LoadTaskDtoAsync(CancellationToken token = default);
         #endregion
 
         #region Others Function

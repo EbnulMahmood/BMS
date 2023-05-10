@@ -16,7 +16,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 
         #region Properties & Object Initialization
         protected ProjectViewModelCreate ViewModelCreate { get; set; } = new();
-        protected EditContext editContext;
+        protected EditContext? editContext;
         protected bool isInvalidForm = true;
         [Parameter]
         public EventCallback<(string, string)> OnProjectAddCompletedAsync { get; set; }

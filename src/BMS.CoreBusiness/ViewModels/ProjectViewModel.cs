@@ -11,5 +11,6 @@ namespace BMS.CoreBusiness.ViewModels
 
     public sealed record ProjectViewModelEdit : ProjectViewModelCreate
     {
+        public Guid Id { get; set; }
     }
 }

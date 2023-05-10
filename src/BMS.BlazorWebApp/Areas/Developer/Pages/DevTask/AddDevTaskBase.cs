@@ -39,7 +39,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.DevTask
             {
                 editContext = new EditContext(ViewModelCreate);
 
-                ProjectDropdownDtoList = await ProjectService.LoadProjectDropdownAsync();
+                ProjectDropdownDtoList = await ProjectService.LoadProjectDtoDropdownAsync();
                 ResponsibleDeveloperDtoList = await UserManagerService.LoadUserAsync(RoleConstants.Developer);
                 ResponsibleQADtoList = await UserManagerService.LoadUserAsync(RoleConstants.QA);
 

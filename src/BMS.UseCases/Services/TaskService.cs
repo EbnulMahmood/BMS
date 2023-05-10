@@ -19,7 +19,7 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region List Loading Function
-        Task<(IEnumerable<DevTaskDto>, int)> LoadTaskAsync(CancellationToken token = default);
+        Task<(IEnumerable<DevTaskDto>, int)> LoadTaskDtoAsync(CancellationToken token = default);
         #endregion
 
         #region Others Function
@@ -105,15 +105,15 @@ namespace BMS.UseCases.Services
         #endregion
 
         #region List Loading Function
-        public async Task<(IEnumerable<DevTaskDto>, int)> LoadTaskAsync(CancellationToken token = default)
+        public async Task<(IEnumerable<DevTaskDto>, int)> LoadTaskDtoAsync(CancellationToken token = default)
         {
             try
             {
-                return await _queryTaskRepository.LoadTaskAsync(token);
+                return await _queryTaskRepository.LoadTaskDtoAsync(token);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadTaskAsync));
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadTaskDtoAsync));
                 throw;
             }
         }

@@ -22,14 +22,14 @@ namespace BMS.CoreBusiness.Base
 
         [Required]
         public DateTimeOffset CreatedOnUtc { get; init; }
-        public TId LastModifiedById { get; init; }
+        public TId LastModifiedById { get; set; }
         object IEntity.LastModifiedById
         {
             get { return LastModifiedById; }
-            init { }
+            set { }
         }
 
-        public DateTimeOffset? LastModifiedOnUtc { get; init; }
+        public DateTimeOffset? LastModifiedOnUtc { get; set; }
         public string IPAddress { get; init; } = string.Empty;
         [Timestamp]
         public byte[] RowVersion { get; init; }

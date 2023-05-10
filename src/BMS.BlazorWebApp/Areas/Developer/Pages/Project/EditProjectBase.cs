@@ -1,4 +1,5 @@
 ﻿using BMS.BlazorWebApp.Helpers;
+using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.ViewModels;
 using BMS.UseCases.Services;
 using Microsoft.AspNetCore.Components;
@@ -15,13 +16,27 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 
         #region Properties & Object Initialization
         public ProjectViewModelEdit ViewModelEdit { get; set; } = new();
-        protected EditContext editContext;
+        protected EditContext? editContext;
         protected bool isInvalidForm = true;
+        [Parameter]
+        public string ProjectId { get; set; } = string.Empty;
         [Parameter]
         public EventCallback<(string, string)> OnProjectEditCompletedAsync { get; set; }
 
         [Inject]
         protected IProjectService ProjectService { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                await GetProjectDtoAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnInitialized));
+            }
+        }
 
         protected override void OnInitialized()
         {
@@ -48,7 +63,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             string type = "danger";
             try
             {
-                //await ProjectService.UpdateProjectAsync(ViewModelEdit);
+                await ProjectService.UpdateProjectAsync(ViewModelEdit);
                 message = $"{ViewModelEdit.Name} updated successfully";
                 type = "success";
             }
@@ -77,6 +92,19 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Single Instances Loading Function
+        public async Task GetProjectDtoAsync()
+        {
+            try
+            {
+                var projectDto = await ProjectService.GetProjectDtoByIdAsync(ProjectId);
+                ViewModelEdit.Id = projectDto.Id;
+                ViewModelEdit.Name = projectDto.Name;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong on get {Method}", nameof(GetProjectDtoAsync));
+            }
+        }
         #endregion
 
         #region List Loading Function

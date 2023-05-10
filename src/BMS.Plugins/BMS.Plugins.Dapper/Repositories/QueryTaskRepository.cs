@@ -27,7 +27,7 @@ namespace BMS.Plugins.Dapper.Repositories
         #endregion
 
         #region List Loading Function
-        public async Task<(IEnumerable<DevTaskDto>, int)> LoadTaskAsync(CancellationToken token = default)
+        public async Task<(IEnumerable<DevTaskDto>, int)> LoadTaskDtoAsync(CancellationToken token = default)
         {
             if (_busy) { return (Enumerable.Empty<DevTaskDto>(), 0); }
 
@@ -36,14 +36,14 @@ namespace BMS.Plugins.Dapper.Repositories
             {
                 IEnumerable<DevTaskDto> taskList = new List<DevTaskDto>();
 
-                string countQuery = $@"/*QueryTaskRepository=>LoadTaskAsync*/
+                string countQuery = $@"/*QueryTaskRepository=>LoadTaskDtoAsync*/
 SELECT COUNT(*) FROM Tasks
 ";
                 int recordsCount = await _context.GetFirstOrDefaultDataAsync<int, dynamic>(countQuery, new { });
 
                 if (recordsCount > 0)
                 {
-                    string query = $@"/*QueryTaskRepository=>LoadTaskAsync*/
+                    string query = $@"/*QueryTaskRepository=>LoadTaskDtoAsync*/
 SELECT
 t.Title
 ,t.Status
@@ -85,7 +85,7 @@ LEFT JOIN AspNetUsers AS qar ON qar.Id = t.QAResponsibleId
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadTaskAsync));
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(LoadTaskDtoAsync));
                 _busy = false;
                 throw;
             }
