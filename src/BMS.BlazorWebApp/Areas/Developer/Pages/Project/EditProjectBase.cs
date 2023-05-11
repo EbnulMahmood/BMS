@@ -26,15 +26,19 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         [Inject]
         protected IProjectService ProjectService { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async void OnParametersSet()
         {
             try
             {
-                await GetProjectDtoAsync();
+                if (ProjectId != default)
+                {
+                    await Task.Run(GetProjectDtoAsync);
+                }
+                StateHasChanged();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnInitialized));
+                Logger.LogError(ex, "Something went wrong on Initialization {Method}", nameof(OnParametersSet));
             }
         }
 

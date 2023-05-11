@@ -16,7 +16,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 
         #region Properties & Object Initialization
         [Inject]
-        public IProjectService ProjectService { get; private set; }
+        protected IProjectService ProjectService { get; private set; }
         protected IEnumerable<ProjectDto> Projects { get; private set; } = new List<ProjectDto>();
         protected PaginationState pagination = new() { ItemsPerPage = Constants.InitItemsPerPage };
 
@@ -30,6 +30,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         protected string MessageType { get; private set; } = string.Empty;
         protected bool IsDisplayAddProject { get; private set; } = true;
         protected bool IsDisplayAleart { get; private set; } = false;
+        protected string ProjectId { get; private set; } = string.Empty;
 
         protected override async Task OnInitializedAsync()
         {
@@ -50,9 +51,23 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Operational Function
-        protected Task EditAsync(ProjectDto projectDto)
+        protected void Edit(ProjectDto projectDto)
         {
-            throw new NotImplementedException();
+            IsLoading = true;
+            try
+            {
+                ProjectId = projectDto.Id.ToString();
+                IsDisplayAddProject = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Something went wrong edit {Method}", nameof(Edit));
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+            StateHasChanged();
         }
         #endregion
 
@@ -82,12 +97,12 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Helper Function
-        public void ToggleAddProject()
+        protected void ToggleAddProject()
         {
             IsDisplayAddProject = false;
         }
 
-        public async Task OnProjectAddCompletedAsync(string message, string type)
+        protected async Task OnProjectAddOrUpdateCompletedAsync(string message, string type)
         {
             IsLoading = true;
             try
@@ -99,7 +114,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong on {Method}", nameof(OnProjectAddCompletedAsync));
+                Logger.LogError(ex, "Something went wrong on {Method}", nameof(OnProjectAddOrUpdateCompletedAsync));
             }
             finally
             {
@@ -107,7 +122,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             }
         }
 
-        public void DismissAleart()
+        protected void DismissAleart()
         {
             IsDisplayAleart = false;
         }

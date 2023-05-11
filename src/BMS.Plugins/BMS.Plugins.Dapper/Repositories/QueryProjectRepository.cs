@@ -96,8 +96,9 @@ WHERE p.Id = @Id
             try
             {
                 string query = $@"/*QueryProjectRepository=>LoadProjectDtoAsync*/
-SELECT 
-p.Name
+SELECT
+p.Id
+,p.Name
 ,cb.UserName AS CreatedBy
 ,lmb.UserName AS LastModifiedBy
 ,p.CreatedOnUtc

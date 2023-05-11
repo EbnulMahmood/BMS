@@ -15,15 +15,19 @@
     }
     else
     {
-        @if (IsDisplayAddProject == true)
+        if (IsDisplayAddProject == true)
         {
             <button type="button" class="btn btn-primary mb-2" @onclick="ToggleAddProject">Add Project</button>
         }
-        @if (IsDisplayAddProject == false)
+        if (IsDisplayAddProject == false)
         {
-            <AddProject OnProjectAddCompletedAsync="async (args) => await OnProjectAddCompletedAsync(args.Item1, args.Item2)" />
+            <AddProject OnProjectAddCompletedAsync="async (args) => await OnProjectAddOrUpdateCompletedAsync(args.Item1, args.Item2)" />
         }
-        @if (IsDisplayAleart == true)
+        else if (IsDisplayAddProject == true && !string.IsNullOrWhiteSpace(ProjectId))
+        {
+            <EditProject ProjectId="@ProjectId" OnProjectEditCompletedAsync="async (args) => await OnProjectAddOrUpdateCompletedAsync(args.Item1, args.Item2)" />
+        }
+        if (IsDisplayAleart == true)
         {
             <DisplayAleart OnAleartDismissed="DismissAleart" Message="@Message" MessageType="@MessageType" />
         }
@@ -52,9 +56,9 @@
                 <PropertyColumn Property="@(p => p.CreatedOnUtc)" Title="Created On" Format="MM/dd/yyyy hh:mm tt" Sortable="true" />
                 <PropertyColumn Property="@(p => p.LastModifiedOnUtc)" Title="Last Modified On" Format="MM/dd/yyyy hh:mm tt" Sortable="true" />
                 <TemplateColumn Title="Actions" Align="Align.Center">
-                    <button class="btn btn-outline-info" @onclick="async () => await EditAsync(context)">Details</button>
-                    <button class="btn btn-outline-primary" @onclick="async () => await EditAsync(context)">Edit</button>
-                    <button class="btn btn-outline-danger" @onclick="async () => await EditAsync(context)">Delete</button>
+                    <button class="btn btn-outline-info" >Details</button>
+                    <button class="btn btn-outline-primary" @onclick="() => Edit(context)">Edit</button>
+                    <button class="btn btn-outline-danger" >Delete</button>
                 </TemplateColumn>
             </QuickGrid>
         </div>
