@@ -111,7 +111,7 @@ namespace BMS.UseCases.Services
                     throw new OperationCanceledException("Operation was canceled");
                 }
 
-                if (viewModel.Id == Guid.Empty)
+                if (viewModel.Id == default || viewModel.Id == Guid.Empty)
                 {
                     throw new InvalidDataException("Project not found");
                 }
@@ -120,11 +120,14 @@ namespace BMS.UseCases.Services
 
                 await CkeckBeforeSaveOrUpdateAsync(viewModel.Name, viewModel.Id, token);
 
-                project.Name = viewModel.Name?.Trim();
-                project.LastModifiedById = _commonService.GetCurrentUserId();
-                project.LastModifiedOnUtc = DateTimeOffset.UtcNow;
+                Project updatedProject = project with { Name = viewModel.Name?.Trim() };
 
-                await _executeProjectRepository.UpdateProjectAsync(project, token);
+                if (project == updatedProject)
+                {
+                    throw new InvalidDataException("No changes detected");
+                }
+
+                await _executeProjectRepository.UpdateProjectAsync(updatedProject with { LastModifiedById = _commonService.GetCurrentUserId(), LastModifiedOnUtc = DateTimeOffset.UtcNow }, token);
             }
             catch (OperationCanceledException)
             {
