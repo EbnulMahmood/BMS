@@ -49,12 +49,17 @@ namespace BMS.UseCases.Services
         {
             try
             {
-                bool success = Guid.TryParse(_httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId);
+                var context = _httpContext.HttpContext ?? throw new UnauthorizedAccessException("Unauthorized");
+                bool success = Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId);
                 if (success)
                 {
                     return userId;
                 }
                 return Guid.Empty;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -69,14 +74,19 @@ namespace BMS.UseCases.Services
             {
                 try
                 {
-                    var remoteIpAddress = _httpContext.HttpContext.Connection.RemoteIpAddress;
+                    var context = _httpContext.HttpContext ?? throw new UnauthorizedAccessException("Unauthorized");
+                    var remoteIpAddress = context.Connection.RemoteIpAddress;
 
                     if (string.Equals(remoteIpAddress.ToString().Trim(), "::1", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        return "localhost";
+                        return "127.0.0.1";
                     }
 
                     return remoteIpAddress.ToString();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw;
                 }
                 catch (ArgumentException)
                 {
