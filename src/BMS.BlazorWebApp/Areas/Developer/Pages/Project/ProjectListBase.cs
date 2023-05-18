@@ -27,7 +27,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             .Where(x => x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
         protected bool IsLoading { get; private set; } = false;
-        protected bool IsColosed { get; private set; } = true;
+        protected bool IsDisplayClose { get; private set; } = false;
         protected string Message { get; private set; } = string.Empty;
         protected string MessageType { get; private set; } = string.Empty;
         protected bool DisplayAddButton { get; private set; } = true;
@@ -61,6 +61,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             IsLoading = true;
             try
             {
+                IsDisplayClose = true;
                 ProjectViewModelEdit = ProjectViewModelEdit with { Id = projectDto.Id, Name = projectDto.Name };
                 UIConditionChange(displayAddButton: false, isEditing: true, isDetailsView: false);
             }
@@ -82,6 +83,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             IsLoading = true;
             try
             {
+                IsDisplayClose = true;
                 ProjectViewModelDetils = ProjectViewModelDetils with { Name = projectDto.Name, CreatedBy = projectDto.CreatedBy, LastModifiedBy = projectDto.LastModifiedBy, CreatedOnUtc = projectDto.CreatedOnUtc, LastModifiedOnUtc = projectDto.LastModifiedOnUtc };
                 UIConditionChange(displayAddButton: false, isEditing: false, isDetailsView: true);
             }
@@ -129,6 +131,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         protected void ToggleAddProjectButton()
         {
             DisplayAddButton = false;
+            IsDisplayClose = true;
         }
 
         protected async Task OnProjectAddOrUpdateCompletedAsync(string message, string type)
@@ -158,8 +161,12 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
 
         protected void CloseButton()
         {
-            IsColosed = false;
-        }  
+            IsDisplayClose = false;
+            IsEditing = false;
+            IsDetailsView = false;
+            DisplayAddButton = true;
+            IsDisplayAleart = false;
+        }
         #endregion
     }
 }
