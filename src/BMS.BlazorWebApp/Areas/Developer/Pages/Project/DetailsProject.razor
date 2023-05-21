@@ -1,4 +1,5 @@
-﻿@inherits DetailsProjectBase
+﻿@using Humanizer;
+@inherits DetailsProjectBase
 
 <div class="card text-center mb-2">
     <div class="card-header">
@@ -7,9 +8,9 @@
     <ul class="list-group">
         <li class="list-group-item"><strong>Created By:</strong> @ViewModelDetils.CreatedBy</li>
         <li class="list-group-item"><strong>Last Modified By:</strong> @ViewModelDetils.LastModifiedBy</li>
-        <li class="list-group-item"><strong>Created On:</strong> @ViewModelDetils.CreatedOnUtc</li>
+        <li class="list-group-item"><strong>Created On:</strong> @ViewModelDetils.CreatedOnUtc.Humanize()</li>
     </ul>
     <div class="card-footer text-muted">
-        <p class="m-0"><strong>Last Modified On:</strong> @ViewModelDetils.LastModifiedOnUtc</p>
+        <p class="m-0"><strong>Last Modified On:</strong> @ViewModelDetils.LastModifiedOnUtc.Humanize()</p>
     </div>
 </div>
