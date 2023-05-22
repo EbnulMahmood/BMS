@@ -52,7 +52,6 @@ namespace BMS.Plugins.EFCore.Repositories
             }
             catch (DbUpdateConcurrencyException)
             {
-
                 _busy = false;
                 throw;
             }
@@ -96,7 +95,6 @@ namespace BMS.Plugins.EFCore.Repositories
             }
             catch (DbUpdateConcurrencyException)
             {
-
                 _busy = false;
                 throw;
             }

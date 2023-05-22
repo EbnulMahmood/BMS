@@ -1,0 +1,49 @@
+﻿@using static BMS.BlazorWebApp.Helpers.WebHelper;
+@inherits DisplayModalBase
+
+<div class="modal fade show" id="myModal" tabindex="-1" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Caption</h4>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="@CancelAsync">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>@Message</p>
+            </div>
+            <div class="modal-footer">
+                @switch (Type)
+                {
+                    case ModalCategory.Okay:
+                        <button type="button" class="btn btn-primary"
+                        @onclick=@OkAsync>
+                            OK
+                        </button>
+                        break;
+                    case ModalCategory.SaveNot:
+                        <button type="button" class="btn btn-primary"
+                        @onclick=@OkAsync>
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-warning"
+                        @onclick="@CancelAsync">
+                            Cancel
+                        </button>
+                        break;
+                    case ModalCategory.DeleteNot:
+                        <button type="button" class="btn btn-danger"
+                        @onclick=@OkAsync>
+                            Delete
+                        </button>
+                        <button type="button" class="btn btn-warning"
+                        @onclick="@CancelAsync">
+                            Cancel
+                        </button>
+                        break;
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace BMS.BlazorWebApp.Areas.Helper.Pages.Aleart
+namespace BMS.BlazorWebApp.Areas.Common.Pages.Aleart
 {
     public class DisplayAleartBase : ComponentBase
     {

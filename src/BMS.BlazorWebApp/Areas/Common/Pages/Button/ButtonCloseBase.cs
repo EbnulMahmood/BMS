@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace BMS.BlazorWebApp.Areas.Helper.Pages.Button
+namespace BMS.BlazorWebApp.Areas.Common.Pages.Button
 {
     public class ButtonCloseBase : ComponentBase
     {

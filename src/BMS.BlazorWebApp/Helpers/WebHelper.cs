@@ -10,6 +10,13 @@
             100
         };
 
+        public enum ModalCategory
+        {
+            Okay,
+            SaveNot,
+            DeleteNot
+        }
+
         public static string SetExceptionMessage(Exception ex, string moreInfo = "")
         {
             Type exceptionType = ex.GetType();

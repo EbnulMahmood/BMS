@@ -1,4 +1,5 @@
 ﻿using BMS.BlazorWebApp.Areas.Developer.Pages.DevTask;
+using BMS.BlazorWebApp.Helpers;
 using BMS.BlazorWebApp.Settings;
 using BMS.CoreBusiness.Dtos;
 using BMS.CoreBusiness.ViewModels;
@@ -34,6 +35,9 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         protected bool IsEditing { get; private set; } = false;
         protected bool IsDetailsView { get; private set; } = false;
         protected bool IsDisplayAleart { get; private set; } = false;
+        protected bool DialogIsOpen { get; private set; } = false;
+        private Guid ProjectId { get; set; } = default;
+        protected string ProjectDeleteMessage { get; set; } = string.Empty;
         protected ProjectViewModelDetils ProjectViewModelDetils { get; private set; } = new();
         protected ProjectViewModelEdit ProjectViewModelEdit { get; private set; } = new();
 
@@ -74,6 +78,56 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
                 IsLoading = false;
             }
             StateHasChanged();
+        }
+
+        public async Task OnDialogCloseAsync(bool isOk)
+        {
+            if (isOk is true)
+            {
+                string message = string.Empty;
+                string type = "danger";
+                IsLoading = true;
+                try
+                {
+                    await ProjectService.DeleteProjectAsync(ProjectId);
+                    message = "Project deleted successfully";
+                    type = "success";
+                }
+                catch (OperationCanceledException ex)
+                {
+                    message = ex.Message;
+                    Logger.LogError(ex, ex.Message);
+                }
+                catch (NullReferenceException ex)
+                {
+                    message = ex.Message;
+                    Logger.LogError(ex, ex.Message);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    message = ex.Message;
+                    Logger.LogError(ex, ex.Message);
+                }
+                catch (InvalidDataException ex)
+                {
+                    message = ex.Message;
+                    Logger.LogError(ex, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    message = WebHelper.SetExceptionMessage(ex);
+                    Logger.LogError(ex, "Something went wrong OnDialogClose {Method}", nameof(OnDialogCloseAsync));
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+                IsDisplayAleart = true;
+                await OnProjectActionCompletedAsync(message, type);
+            }
+            DialogIsOpen = false;
+            DisplayAddButton = true;
+            IsDisplayClose = false;
         }
         #endregion
 
@@ -118,23 +172,24 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
         #endregion
 
         #region Others Function
-        private void UIConditionChange(bool displayAddButton = false, bool isEditing = false, bool isDetailsView = false)
+        private void UIConditionChange(bool displayAddButton = false, bool isEditing = false, bool isDetailsView = false, bool isDisplayAleart = false)
         {
             DisplayAddButton = displayAddButton;
             IsEditing = isEditing;
             IsDetailsView = isDetailsView;
-            IsDisplayAleart = false;
+            IsDisplayAleart = isDisplayAleart;
         }
         #endregion
 
         #region Helper Function
         protected void ToggleAddProjectButton()
         {
+            IsDisplayAleart = false;
             DisplayAddButton = false;
             IsDisplayClose = true;
         }
 
-        protected async Task OnProjectAddOrUpdateCompletedAsync(string message, string type)
+        protected async Task OnProjectActionCompletedAsync(string message, string type)
         {
             IsLoading = true;
             try
@@ -146,7 +201,7 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Something went wrong on {Method}", nameof(OnProjectAddOrUpdateCompletedAsync));
+                Logger.LogError(ex, "Something went wrong on {Method}", nameof(OnProjectActionCompletedAsync));
             }
             finally
             {
@@ -166,6 +221,13 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             IsDetailsView = false;
             DisplayAddButton = true;
             IsDisplayAleart = false;
+        }
+
+        public void OpenDialog(Guid id, string title)
+        {
+            DialogIsOpen = true;
+            ProjectId = id;
+            ProjectDeleteMessage = $"Are you sure, you want to delete {title}?";
         }
         #endregion
     }

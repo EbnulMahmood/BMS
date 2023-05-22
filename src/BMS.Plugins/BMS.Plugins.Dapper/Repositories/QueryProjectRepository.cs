@@ -37,8 +37,9 @@ SELECT
 *
 FROM Projects
 WHERE Id = @Id
+AND IsDeleted = @IsDeleted
 ";
-                return await _context.GetFirstOrDefaultDataAsync<Project, dynamic>(query, new { Id = id });
+                return await _context.GetFirstOrDefaultDataAsync<Project, dynamic>(query, new { Id = id, IsDeleted = false });
             }
             catch (Exception ex)
             {
@@ -71,8 +72,9 @@ FROM Projects AS p
 INNER JOIN AspNetUsers AS cb ON cb.Id = p.CreatedById
 INNER JOIN AspNetUsers AS lmb ON lmb.Id = p.LastModifiedById
 WHERE p.Id = @Id
+AND p.IsDeleted = @IsDeleted
 ";
-                return await _context.GetFirstOrDefaultDataAsync<ProjectDto, dynamic>(query, new { Id = id });
+                return await _context.GetFirstOrDefaultDataAsync<ProjectDto, dynamic>(query, new { Id = id, IsDeleted = false });
             }
             catch (Exception ex)
             {
@@ -106,9 +108,10 @@ p.Id
 FROM Projects AS p
 INNER JOIN AspNetUsers AS cb ON cb.Id = p.CreatedById
 INNER JOIN AspNetUsers AS lmb ON lmb.Id = p.LastModifiedById
+WHERE p.IsDeleted = @IsDeleted
 ORDER BY p.CreatedOnUtc DESC
 ";
-                return await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { });
+                return await _context.LoadDataAsync<ProjectDto, dynamic>(query, new { IsDeleted = false });
             }
             catch (Exception ex)
             {
@@ -134,8 +137,9 @@ SELECT
 Id
 ,Name
 FROM Projects
+WHERE IsDeleted = @IsDeleted
 ";
-                var projectDtoList = await _context.LoadDataAsync<ProjectDropdownDto, dynamic>(query, new { });
+                var projectDtoList = await _context.LoadDataAsync<ProjectDropdownDto, dynamic>(query, new { IsDeleted = false });
 
                 return projectDtoList;
             }
@@ -174,9 +178,10 @@ SELECT
 COUNT(*) 
 FROM Projects WITH (INDEX(Index_Name))
 WHERE Name = @Name
+AND IsDeleted = @IsDeleted
 {conditionQuery}
 ";
-                return _context.GetFirstOrDefaultDataAsync<bool, dynamic>(query, new { Name = name.Trim(), Id = projectId });
+                return _context.GetFirstOrDefaultDataAsync<bool, dynamic>(query, new { Name = name.Trim(), Id = projectId, IsDeleted = false });
             }
             catch (Exception ex)
             {

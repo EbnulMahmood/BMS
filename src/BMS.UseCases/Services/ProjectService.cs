@@ -12,6 +12,7 @@ namespace BMS.UseCases.Services
         #region Operational Function
         Task SaveProjectAsync(ProjectViewModelCreate viewModel, CancellationToken token = default);
         Task UpdateProjectAsync(ProjectViewModelEdit viewModel, CancellationToken token = default);
+        Task DeleteProjectAsync(Guid id, CancellationToken token = default);
         #endregion
 
         #region Single Instances Loading Function
@@ -148,6 +149,54 @@ namespace BMS.UseCases.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something went wrong on {Method}", nameof(SaveProjectAsync));
+                throw;
+            }
+        }
+
+        public async Task DeleteProjectAsync(Guid id, CancellationToken token = default)
+        {
+            try
+            {
+                if (token.IsCancellationRequested == true)
+                {
+                    throw new OperationCanceledException("Operation was canceled");
+                }
+
+                if (id == default || id == Guid.Empty)
+                {
+                    throw new InvalidDataException("Project not found");
+                }
+
+                Project project = await _queryProjectRepository.GetProjectByIdAsync(id, token) ?? throw new NullReferenceException("Null project found");
+
+                Project updatedProject = project with { IsDeleted = true };
+
+                if (project == updatedProject)
+                {
+                    throw new InvalidDataException("No changes detected");
+                }
+
+                await _executeProjectRepository.UpdateProjectAsync(updatedProject with { LastModifiedById = _commonService.GetCurrentUserId(), LastModifiedOnUtc = DateTimeOffset.UtcNow }, token);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (NullReferenceException)
+            {
+                throw;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (InvalidDataException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong on {Method}", nameof(DeleteProjectAsync));
                 throw;
             }
         }

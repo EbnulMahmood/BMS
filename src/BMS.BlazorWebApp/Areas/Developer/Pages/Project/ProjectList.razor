@@ -1,9 +1,11 @@
 ﻿@page "/Developer/Projects"
-@using BMS.BlazorWebApp.Areas.Helper.Pages.Aleart
-@using BMS.BlazorWebApp.Areas.Helper.Pages.Loader
-@using BMS.BlazorWebApp.Areas.Helper.Pages.Button
+@using BMS.BlazorWebApp.Areas.Common.Pages.Aleart
+@using BMS.BlazorWebApp.Areas.Common.Pages.Loader
+@using BMS.BlazorWebApp.Areas.Common.Pages.Button
+@using BMS.BlazorWebApp.Areas.Common.Pages.Modal
 @using BMS.BlazorWebApp.Helpers;
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using static BMS.BlazorWebApp.Helpers.WebHelper;
 @inherits ProjectListBase
 
 <PageTitle>Project List</PageTitle>
@@ -26,11 +28,11 @@
         }
         else if (IsEditing is false && IsDetailsView is false)
         {
-            <AddProject OnProjectAddCompletedAsync="async (args) => await OnProjectAddOrUpdateCompletedAsync(args.Item1, args.Item2)" />
+            <AddProject OnProjectAddCompletedAsync="async (args) => await OnProjectActionCompletedAsync(args.Item1, args.Item2)" />
         }
         else if (DisplayAddButton is false && IsEditing is true)
         {
-            <EditProject ViewModelEdit="@ProjectViewModelEdit" OnProjectEditCompletedAsync="async (args) => await OnProjectAddOrUpdateCompletedAsync(args.Item1, args.Item2)" />
+            <EditProject ViewModelEdit="@ProjectViewModelEdit" OnProjectEditCompletedAsync="async (args) => await OnProjectActionCompletedAsync(args.Item1, args.Item2)" />
         }
         else if (DisplayAddButton is false && IsDetailsView is true)
         {
@@ -39,6 +41,10 @@
         if (IsDisplayAleart is true)
         {
             <DisplayAleart OnAleartDismissed="DismissAleart" Message="@Message" MessageType="@MessageType" />
+        }
+        if (DialogIsOpen is true)
+        {
+            <DisplayModal Caption="Delete a project" Message="@ProjectDeleteMessage" OnCloseAsync="@OnDialogCloseAsync" Type="ModalCategory.DeleteNot" />
         }
 
         <div class="page-size-chooser">
@@ -67,7 +73,7 @@
                 <TemplateColumn Title="Actions" Align="Align.Center">
                     <button class="btn btn-outline-info" @onclick="() => Details(context)">Details</button>
                     <button class="btn btn-outline-primary" @onclick="() => Edit(context)">Edit</button>
-                    <button class="btn btn-outline-danger">Delete</button>
+                    <button class="btn btn-outline-danger" @onclick="() => OpenDialog(context.Id, context.Name)">Delete</button>
                 </TemplateColumn>
             </QuickGrid>
         </div>
