@@ -9,6 +9,8 @@ using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using BMS.CoreBusiness.Entities.Membership;
 using Serilog;
+using Microsoft.AspNetCore.ResponseCompression;
+using BMS.BlazorWebApp.Hubs;
 
 var configuration = new ConfigurationBuilder()
            .AddJsonFile(path: Constants.appsettingsFileName)
@@ -45,11 +47,19 @@ try
     builder.Services.AddRazorPages();
     builder.Services.AddServerSideBlazor();
 
+    builder.Services.AddResponseCompression(opts =>
+    {
+        opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            new[] { "application/octet-stream" });
+    });
+
     builder.Services.AddAuthorizationSettings();
 
     builder.Host.UseSerilog();
 
     var app = builder.Build();
+
+    app.UseResponseCompression();
 
     app.UseSerilogRequestLogging();
 
@@ -73,6 +83,9 @@ try
     app.MapRazorPages();
 
     app.MapBlazorHub();
+
+    app.MapHub<ProjectHub>("/projecthub");
+
     app.MapFallbackToPage(Constants.hostPage);
 
     app.Run();

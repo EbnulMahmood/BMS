@@ -1,4 +1,5 @@
-﻿@inherits EditProjectBase
+﻿@attribute [Authorize]
+@inherits EditProjectBase
 
 <EditForm EditContext="@editContext" OnSubmit="async () => await HandleSubmitAsync()">
     <DataAnnotationsValidator />

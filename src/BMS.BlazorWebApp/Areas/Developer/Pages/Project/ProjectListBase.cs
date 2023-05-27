@@ -128,6 +128,8 @@ namespace BMS.BlazorWebApp.Areas.Developer.Pages.Project
             DialogIsOpen = false;
             DisplayAddButton = true;
             IsDisplayClose = false;
+            IsEditing = false;
+            IsDetailsView = false;
         }
         #endregion
 
